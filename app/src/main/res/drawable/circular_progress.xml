@@ -4,10 +4,10 @@
     <item android:id="@android:id/secondaryProgress">
         <shape
             android:shape="ring"
-            android:thicknessRatio="6.0"
+            android:thicknessRatio="15.0"
             android:useLevel="true">
 
-            <solid android:color="@color/primaryDarkColor"/>
+            <solid android:color="@color/colorPrimaryLight"/>
 
         </shape>
     </item>

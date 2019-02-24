@@ -15,5 +15,9 @@ class MainActivity : BaseActivity() {
         observable_get.setOnClickListener {
             startActivity(getActivityIntent(NeverErrorGETActivity::class.java, this))
         }
+
+        download.setOnClickListener {
+            startActivity(getActivityIntent(DownloadActivity::class.java, this))
+        }
     }
 }

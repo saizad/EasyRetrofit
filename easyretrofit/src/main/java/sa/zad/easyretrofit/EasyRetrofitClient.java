@@ -94,7 +94,7 @@ public class EasyRetrofitClient {
   }
 
   protected HttpLoggingInterceptor.Level loggingLevel() {
-    return BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE;
+    return BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.HEADERS : HttpLoggingInterceptor.Level.NONE;
   }
 
   protected long cacheStale(@CachePolicy int cachePolicy) {

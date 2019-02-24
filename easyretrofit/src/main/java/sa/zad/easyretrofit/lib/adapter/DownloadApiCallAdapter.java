@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.URI;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -38,7 +39,7 @@ public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ResponseB
   protected Observable<Response<ProgressListener.Progress<File>>> call(Call<ResponseBody> call) {
     PublishSubject<Response<ProgressListener.Progress<File>>> progressPublishSubject = PublishSubject.create();
     final CallEnqueueObservable<ResponseBody> downloadEnqueueObservable = new CallEnqueueObservable<>(call);
-    downloadEnqueueObservable.subscribe(responseBodyResponse -> {
+    final Disposable subscribe = downloadEnqueueObservable.subscribe(responseBodyResponse -> {
       if (!responseBodyResponse.isSuccessful()) {
         progressPublishSubject.onNext(Response.error(responseBodyResponse.code(), responseBodyResponse.errorBody()));
         return;
@@ -92,16 +93,17 @@ public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ResponseB
         byte data[] = new byte[1024];
         int count;
         int written = 0;
+        Long startTime = System.currentTimeMillis();
         while ((count = inputStream.read(data)) != -1) {
           outputStream.write(data, 0, count);
           written += count;
-          ProgressListener.Progress<File> downloadProgress = new ProgressListener.Progress<>(body.contentLength());
+          ProgressListener.Progress<File> downloadProgress = new ProgressListener.Progress<>(body.contentLength(), startTime);
           downloadProgress.setWritten(written);
           progressListener.onProgressUpdate(downloadProgress);
         }
 
         outputStream.flush();
-        ProgressListener.Progress<File> downloadProgress = new ProgressListener.Progress<>(body.contentLength());
+        ProgressListener.Progress<File> downloadProgress = new ProgressListener.Progress<>(body.contentLength(), startTime);
         downloadProgress.setValue(destinationFile);
         progressListener.onFinish(downloadProgress);
         Log.d(TAG, destinationFile.getParent());

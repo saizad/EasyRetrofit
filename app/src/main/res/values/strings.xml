@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EasyRetrofitExample</string>
+    <string name="name">%s %s</string>
 </resources>

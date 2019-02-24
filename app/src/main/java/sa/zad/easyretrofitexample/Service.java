@@ -22,4 +22,8 @@ interface Service {
 
   @GET
   DownloadApiObservable avatar(@Url String url);
+
+  @GET("/api/unknown/23")
+  NeverErrorObservable<DataModel<User>> notFound();
+
 }
