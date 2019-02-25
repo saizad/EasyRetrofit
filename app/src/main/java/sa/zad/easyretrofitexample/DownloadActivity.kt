@@ -45,25 +45,25 @@ class DownloadActivity : BaseActivity() {
         download_button.setOnClickListener {
 
             indeterminate.visibility = View.VISIBLE
-
+            download_button.isEnabled = false
             service.download(url)
-                    .onProgressStart {
-                        log(it.totalDuration().toString())
-                        if(it.totalDuration() < 5000){
-                            download_progress.visibility = View.GONE
-                            return@onProgressStart
-                        }
-                        download_progress.visibility = View.VISIBLE
-                        indeterminate.visibility = View.GONE
-                    }
+                    .onProgressStart({
+                        log("onProgressStart " + it.progress.toString())
+                        false }, min_processing_time.text.toString().toLong())
                     .progress {
+                        indeterminate.visibility = View.GONE
+                        download_progress.visibility = View.VISIBLE
                         download_progress.progress = it.progress.toInt()
-                    }.neverException {
+                    }
+                    .neverException {
                         toast(it.message)
+                    }.doOnComplete {
+                        toast("Success")
                     }.doFinally {
                         indeterminate.visibility = View.GONE
                         download_progress.visibility = View.GONE
                         download_progress.progress = 0
+                        download_button.isEnabled = true
                     }.subscribe()
         }
     }

@@ -32,7 +32,7 @@ public class EasyObservable<T> extends Observable<T> {
   /**
    *
    * If error is encountered it will be delivered to error callback
-   * and followed by {@link Observer#onComplete()} event.
+   * and followed by {@link Observer#onComplete()  onComplete} event.
    *
    * @param error error callback
    * @return {@link #EasyObservable(Observable)}
