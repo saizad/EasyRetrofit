@@ -37,7 +37,7 @@ public class EasyRetrofitClient {
   }
 
   protected int cacheSize() {
-    return 50 * 1024 * 1024; // 50MB
+    return 950 * 1024 * 1024; // 50MB
   }
 
   private HttpLoggingInterceptor getLoggingInterceptor() {

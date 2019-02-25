@@ -4,10 +4,10 @@
     <item android:id="@android:id/secondaryProgress">
         <shape
             android:shape="ring"
-            android:thicknessRatio="15.0"
+            android:thicknessRatio="12.0"
             android:useLevel="true">
 
-            <solid android:color="@color/colorPrimaryLight"/>
+            <solid android:color="@color/colorPrimaryDark"/>
 
         </shape>
     </item>
@@ -21,7 +21,7 @@
 
             <shape
                 android:shape="ring"
-                android:thicknessRatio="6.0"
+                android:thicknessRatio="12.0"
                 android:useLevel="true">
 
 
@@ -31,7 +31,7 @@
                     android:pivotY="50%"
                     android:toDegrees="360" />
 
-                <solid android:color="?attr/colorAccent"/>
+                <solid android:color="@color/colorAccent"/>
 
             </shape>
         </rotate>

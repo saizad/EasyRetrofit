@@ -9,6 +9,6 @@ public class User {
   public String first_name;
   @SerializedName("last_name")
   public String last_name;
-  @SerializedName("avatar")
+  @SerializedName("download")
   public String avatar;
 }

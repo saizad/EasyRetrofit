@@ -2,17 +2,17 @@ package sa.zad.easyretrofitexample
 
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.layout_api_error_observable.*
+import kotlinx.android.synthetic.main.layout_easy_observable.*
 import sa.zad.easyretrofitexample.Utils.hideSoftKeyboard
 import sa.zad.easyretrofitexample.model.RegisterBody
 import sa.zad.easyretrofitexample.model.RegisterError
 
 
-class NeverErrorPOSTActivity : BaseActivity() {
+class EasyObservableActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_api_error_observable)
+        setContentView(R.layout.layout_easy_observable)
 
         register.setOnClickListener { _ ->
 
@@ -20,7 +20,6 @@ class NeverErrorPOSTActivity : BaseActivity() {
 
             val registerBody = RegisterBody(email.text.toString(), password.text.toString())
             hideSoftKeyboard(this)
-            register.isEnabled = false
 
             service.register(registerBody)
                     .apiException({
@@ -29,9 +28,8 @@ class NeverErrorPOSTActivity : BaseActivity() {
                     .neverException { showError(it.message) }
                     .doOnNext {
                         showSuccess("Registered Successfully!!")
-                    }.doOnComplete {
-                        progressBar.visibility = View.GONE
-                        register.isEnabled = true
+                    }.doFinally {
+                        postRequest()
                     }.subscribe()
         }
 
@@ -45,8 +43,8 @@ class NeverErrorPOSTActivity : BaseActivity() {
                     }, RegisterError::class.java)
                     .neverException {
                         showError("Api Error Test Failed \n \n" + it.message)
-                    }.doOnComplete {
-                        progressBar.visibility = View.GONE
+                    }.doFinally {
+                        postRequest()
                     }.subscribe()
         }
 
@@ -64,8 +62,8 @@ class NeverErrorPOSTActivity : BaseActivity() {
                     }.doOnNext {
                         showSuccess("Success Test Passed!!")
                     }
-                    .doOnComplete {
-                        progressBar.visibility = View.GONE
+                    .doFinally {
+                        postRequest()
                     }.subscribe()
         }
 
@@ -97,6 +95,14 @@ class NeverErrorPOSTActivity : BaseActivity() {
         progressBar.visibility = View.VISIBLE
         group.visibility = View.GONE
         request_error.visibility = View.GONE
+        observable_menu.isEnabled = false
+        register.isEnabled = false
+    }
+
+    private fun postRequest(){
+        progressBar.visibility = View.GONE
+        observable_menu.isEnabled = true
+        register.isEnabled = true
     }
 
     private fun registerBody(emailStr: String = "", passwordStr: String = ""): RegisterBody {

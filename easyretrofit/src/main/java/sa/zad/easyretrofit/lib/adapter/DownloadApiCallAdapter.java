@@ -90,16 +90,21 @@ public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ResponseB
 
         inputStream = body.byteStream();
         outputStream = new FileOutputStream(destinationFile);
-        byte data[] = new byte[1024];
+        byte data[] = new byte[4096];
         int count;
         int written = 0;
         Long startTime = System.currentTimeMillis();
+        Log.d("adsfadf", "Started");
         while ((count = inputStream.read(data)) != -1) {
           outputStream.write(data, 0, count);
+          Log.d("adsfadf", "Started " + count);
           written += count;
           ProgressListener.Progress<File> downloadProgress = new ProgressListener.Progress<>(body.contentLength(), startTime);
           downloadProgress.setWritten(written);
           progressListener.onProgressUpdate(downloadProgress);
+          Log.d("adsfadf", "Started progress " + downloadProgress.getProgress());
+          Log.d("adsfadf", "Started totalDuration " + downloadProgress.totalDuration());
+          Log.d("adsfadf", "Started timeRemaining " + downloadProgress.timeRemaining());
         }
 
         outputStream.flush();

@@ -16,18 +16,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NeverErrorGETActivity">
+        <activity android:name=".ResultObservableActivity">
         </activity>
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".EasyObservableActivity"/>
+        <activity android:name=".DownloadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
-        </activity>
-        <activity android:name=".NeverErrorPOSTActivity"/>
-        <activity android:name=".DownloadActivity">
 
         </activity>
     </application>

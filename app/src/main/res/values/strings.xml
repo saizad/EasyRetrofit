@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">EasyRetrofitExample</string>
     <string name="name">%s %s</string>
+    <string name="download_url">http://mirror.filearena.net/pub/speed/SpeedTest_%s.dat</string>
 </resources>

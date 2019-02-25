@@ -8,9 +8,9 @@ import retrofit2.adapter.rxjava2.Result;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ResponseException;
 
-public class ResultResponseTransformer<T> extends BaseErrorTransformer<Result<T>, ResponseException> {
+public class FailedResponseTransformer<T> extends BaseErrorTransformer<Result<T>, ResponseException> {
 
-  public ResultResponseTransformer(@Nullable Action1<ResponseException> action) {
+  public FailedResponseTransformer(@Nullable Action1<ResponseException> action) {
     super(action);
   }
 

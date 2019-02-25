@@ -75,14 +75,18 @@
     <ProgressBar
         android:id="@+id/unknown_progress"
         style="?android:attr/progressBarStyle"
-        tools:visibility="visible"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
         app:layout_constraintEnd_toEndOf="@id/avatar"
         app:layout_constraintStart_toStartOf="@id/avatar"
-        app:layout_constraintTop_toTopOf="@+id/avatar"/>
+        app:layout_constraintTop_toTopOf="@+id/avatar"
+        tools:visibility="visible"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/error_check"
@@ -95,25 +99,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-<!--
-    <ProgressBar
-        android:id="@+id/circular_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="0"
-        android:progressDrawable="@drawable/circular_progress"
-        android:secondaryProgress="100"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/avatar"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="@id/avatar"
-        app:layout_constraintStart_toStartOf="@id/avatar"
-        app:layout_constraintTop_toTopOf="@id/avatar"
-        tools:visibility="visible"
-        />
--->
+
 
 </android.support.constraint.ConstraintLayout>

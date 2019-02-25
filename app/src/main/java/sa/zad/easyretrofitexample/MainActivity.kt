@@ -9,11 +9,11 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         response_post.setOnClickListener {
-            startActivity(getActivityIntent(NeverErrorPOSTActivity::class.java, this))
+            startActivity(getActivityIntent(EasyObservableActivity::class.java, this))
         }
 
         observable_get.setOnClickListener {
-            startActivity(getActivityIntent(NeverErrorGETActivity::class.java, this))
+            startActivity(getActivityIntent(ResultObservableActivity::class.java, this))
         }
 
         download.setOnClickListener {

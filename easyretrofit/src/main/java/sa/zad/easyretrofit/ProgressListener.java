@@ -26,7 +26,7 @@ public interface ProgressListener<R> {
 
 
     public Progress(long size) {
-      this.size = size;
+      this(size, System.currentTimeMillis());
     }
 
     public Progress(long size, Long startTime) {
