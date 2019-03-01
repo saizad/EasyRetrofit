@@ -22,7 +22,7 @@ import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
-import sa.zad.easyretrofit.ProgressRequestBody;
+import sa.zad.easyretrofit.UploadRequestBody;
 
 final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> implements ProgressListener<T> {
   private ProgressListener.Progress<T> upload;
@@ -33,8 +33,8 @@ final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<
     if (request.body() instanceof MultipartBody) {
       MultipartBody multipartBody = ((MultipartBody) request.body());
       for (MultipartBody.Part part : multipartBody.parts()) {
-        if (part.body() instanceof ProgressRequestBody) {
-          ((ProgressRequestBody) part.body()).setListener(this);
+        if (part.body() instanceof UploadRequestBody) {
+          ((UploadRequestBody) part.body()).setListener(this);
         }
       }
     }
@@ -42,14 +42,14 @@ final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<
 
   @Override
   protected void success(Response<Progress<T>> response) {
-    if(response.isSuccessful()) {
-      if(!(response.body() instanceof Progress))
+    if (response.isSuccessful()) {
+      if (!(response.body() instanceof Progress))
         upload.setValue((T) response.body());
-      else{
+      else {
         upload.setValue(response.body().value);
       }
       observer.onNext(Response.success(upload));
-    }else{
+    } else {
       observer.onNext(Response.error(response.code(), response.errorBody()));
     }
   }

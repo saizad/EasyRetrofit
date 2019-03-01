@@ -6,14 +6,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_download_observable.*
+import sa.zad.easyretrofit.ProgressListener
+import sa.zad.easyretrofit.utils.ObjectUtils
 
 
 class DownloadActivity : BaseActivity() {
      var url: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_download_observable)
-
         val list = ArrayList<String>()
         list.add("16MB")
         list.add("32MB")
@@ -42,29 +44,38 @@ class DownloadActivity : BaseActivity() {
         }
         download_list.onItemSelectedListener = onItemSelectedListener
 
-        download_button.setOnClickListener {
-
-            indeterminate.visibility = View.VISIBLE
-            download_button.isEnabled = false
+        progress_fab.setOnClickListener {
+            progress_fab.setIndeterminate(true)
+            progress_fab.setShowProgressBackground(true)
+            request_error.visibility = View.GONE
             service.download(url)
                     .onProgressStart({
-                        log("onProgressStart " + it.progress.toString())
-                        false }, min_processing_time.text.toString().toLong())
-                    .progress {
-                        indeterminate.visibility = View.GONE
-                        download_progress.visibility = View.VISIBLE
-                        download_progress.progress = it.progress.toInt()
-                    }
-                    .neverException {
-                        toast(it.message)
-                    }.doOnComplete {
-                        toast("Success")
+                    }, ObjectUtils.toInteger(min_processing_time.text.toString(), 1).toLong() * 100, 50)
+                    .progressUpdate {
+                        progress_fab.setIndeterminate(false)
+                        updateProgress(it)
+                    }.onProgressCompleted {
+                        toast("Completed")
+                        progress_fab.setIndeterminate(false)
+                        updateProgress(it)
+                    }.neverException {
+                        request_error.text = it.message
+                        request_error.visibility = View.VISIBLE
+                        progress_fab.hideProgress()
                     }.doFinally {
-                        indeterminate.visibility = View.GONE
-                        download_progress.visibility = View.GONE
-                        download_progress.progress = 0
-                        download_button.isEnabled = true
+//                        progress_fab.hideProgress()
                     }.subscribe()
         }
+    }
+
+    private fun updateProgress(progress: ProgressListener.Progress<*>){
+        updateStatus(progress)
+        progress_fab.setProgress(progress.progress.toInt(), false)
+    }
+
+    private fun updateStatus(progress: ProgressListener.Progress<*>){
+        time_remaining.text = (progress.timeRemaining() / 1000).toString() + " Sec"
+        size_remaining.text = ((progress.size - progress.written) / (1024 * 1000)).toString() + " Mb"
+        elapsed_time.text = (progress.elapsedTime()/ 1000).toString() + " Sec"
     }
 }

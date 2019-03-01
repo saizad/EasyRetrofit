@@ -1,19 +1,15 @@
 package sa.zad.easyretrofitexample;
 
 import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import java.io.File;
-import java.io.IOException;
 
-import okhttp3.ResponseBody;
-import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.lib.adapter.DownloadApiCallAdapter;
 
 public class SampleDownloadApiCallAdapter extends DownloadApiCallAdapter {
 
-  @Override
+  /*@Override
   protected void saveToDisk(ResponseBody body, File destinationFile, ProgressListener<File> progressListener) {
     File file;
     try {
@@ -28,7 +24,7 @@ public class SampleDownloadApiCallAdapter extends DownloadApiCallAdapter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
+  }*/
 
   private static boolean isFileImage(@NonNull File file){
     BitmapFactory.Options options = new BitmapFactory.Options();

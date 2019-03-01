@@ -9,8 +9,8 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
-
-public class ProgressRequestBody extends RequestBody {
+@Deprecated
+public class ProgressRequestBodyDEP extends RequestBody {
 
   private static final int DEFAULT_BUFFER_SIZE = 4096;
 
@@ -18,7 +18,7 @@ public class ProgressRequestBody extends RequestBody {
 
   private final File mFile;
 
-  public ProgressRequestBody(File file) {
+  public ProgressRequestBodyDEP(File file) {
     this(file, new ProgressListener() {
       @Override
       public void onProgressStart(@NonNull Progress upload) {
@@ -42,7 +42,7 @@ public class ProgressRequestBody extends RequestBody {
     });
   }
 
-  public ProgressRequestBody(@NonNull File file, @NonNull ProgressListener listener) {
+  public ProgressRequestBodyDEP(@NonNull File file, @NonNull ProgressListener listener) {
     mListener = listener;
     mFile = file;
   }

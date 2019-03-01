@@ -44,7 +44,7 @@ class ResultObservableActivity : BaseActivity() {
                 .flatMap {
                     val user = it.response()?.body()?.data
                     service.download(user?.avatar).map {
-                        Pair<File, String>(it.value!!,
+                        Pair<File, String>(it,
                                 getString(R.string.name, user?.first_name, user?.last_name))
                     }
                 }

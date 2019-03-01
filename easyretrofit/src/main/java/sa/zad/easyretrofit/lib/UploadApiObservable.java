@@ -5,10 +5,12 @@ import android.support.annotation.NonNull;
 import java.io.File;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
-import sa.zad.easyretrofit.ProgressRequestBody;
+import sa.zad.easyretrofit.UploadRequestBody;
 
 public class UploadApiObservable<T> extends ProgressObservable<T> {
 
@@ -18,6 +20,11 @@ public class UploadApiObservable<T> extends ProgressObservable<T> {
 
   @NonNull
   public static MultipartBody.Part part(File file) {
-    return MultipartBody.Part.createFormData("image", file.getName(), new ProgressRequestBody(file));
+    return part(file, MediaType.parse("multipart/form-data"));
+  }
+
+  @NonNull
+  public static MultipartBody.Part part(File file, MediaType mediaType) {
+    return MultipartBody.Part.createFormData("image", file.getName(), new UploadRequestBody(RequestBody.create(mediaType, file)));
   }
 }

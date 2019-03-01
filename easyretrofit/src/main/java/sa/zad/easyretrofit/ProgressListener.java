@@ -4,6 +4,9 @@ package sa.zad.easyretrofit;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import sa.zad.easyretrofit.utils.ObjectUtils;
 
 
@@ -47,7 +50,9 @@ public interface ProgressListener<R> {
     }
 
     public float getProgress() {
-      return (100f * written / size);
+      DecimalFormat df = new DecimalFormat("#.##");
+      df.setRoundingMode(RoundingMode.HALF_UP);
+      return Float.parseFloat(df.format(100f * written / size));
     }
 
     public void setWritten(long written) {
@@ -61,6 +66,12 @@ public interface ProgressListener<R> {
 
     public boolean hasValue() {
       return ObjectUtils.isNotNull(value);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+      return "Size = " + size + " Written = " + written + " Progress = " + getProgress();
     }
   }
 }

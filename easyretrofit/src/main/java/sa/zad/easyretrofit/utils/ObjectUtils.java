@@ -101,6 +101,22 @@ public final class ObjectUtils {
   }
 
   /**
+   * Converts a {@link String} to an {@link Integer}, or default int if the integer cannot be parsed.
+   */
+  public static @NonNull
+  Integer toInteger(final @Nullable String s, final Integer defaultInt) {
+    if (s != null) {
+      try {
+        return Integer.parseInt(s);
+      } catch (final @NonNull NumberFormatException e) {
+        return defaultInt;
+      }
+    }
+
+    return defaultInt;
+  }
+
+  /**
    * Converts an {@link Integer} to a {@link String}, can be null if the integer is also null.
    */
   public static @Nullable

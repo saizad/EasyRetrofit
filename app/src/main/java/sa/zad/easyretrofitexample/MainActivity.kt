@@ -19,5 +19,9 @@ class MainActivity : BaseActivity() {
         download.setOnClickListener {
             startActivity(getActivityIntent(DownloadActivity::class.java, this))
         }
+
+        upload.setOnClickListener {
+            startActivity(getActivityIntent(UploadActivity::class.java, this))
+        }
     }
 }
