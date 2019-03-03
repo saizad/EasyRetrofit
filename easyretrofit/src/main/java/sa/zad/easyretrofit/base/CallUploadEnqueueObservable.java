@@ -27,7 +27,7 @@ import sa.zad.easyretrofit.UploadRequestBody;
 final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> implements ProgressListener<T> {
   private ProgressListener.Progress<T> upload;
 
-  public CallUploadEnqueueObservable(Call<ProgressListener.Progress<T>> originalCall) {
+  public CallUploadEnqueueObservable(Call<Progress<T>> originalCall) {
     super(originalCall);
     final Request request = originalCall.request();
     if (request.body() instanceof MultipartBody) {

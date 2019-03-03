@@ -7,6 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.transformers.RetrofitResponseOperator;
 
 public class ProgressObservable<T> extends EasyObservable<T> {
 
@@ -15,8 +16,11 @@ public class ProgressObservable<T> extends EasyObservable<T> {
   ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream.takeLast(1).map(progressResponse -> Response.success(progressResponse.body().value)));
     progressUpstream = upstream
+        .compose(upstream1 -> upstream1.onErrorResumeNext(Observable.empty()))
         .window(30, TimeUnit.MILLISECONDS)
-        .flatMap(responseObservable -> responseObservable.takeLast(1).map(Response::body))
+        .flatMap(responseObservable -> responseObservable.takeLast(1))
+        .lift(new RetrofitResponseOperator<>())
+        .map(Response::body)
         .observeOn(AndroidSchedulers.mainThread());
   }
 
@@ -25,7 +29,7 @@ public class ProgressObservable<T> extends EasyObservable<T> {
       if(!progress.hasValue())
         progressAction.call(progress);
     });
-    this.upstream = this.progressUpstream.map(tProgress -> Response.success(tProgress.value));
+    this.upstream = setUpstream();
     return this;
   }
 
@@ -33,7 +37,7 @@ public class ProgressObservable<T> extends EasyObservable<T> {
     this.progressUpstream = this.progressUpstream
         .takeLast(1)
         .doOnNext(progressCompletedAction::call);
-    this.upstream = this.progressUpstream.map(tProgress -> Response.success(tProgress.value));
+    this.upstream = setUpstream();
     return this;
   }
 
@@ -49,7 +53,11 @@ public class ProgressObservable<T> extends EasyObservable<T> {
           return false;
         });
 
-    this.upstream = this.progressUpstream.map(tProgress -> Response.success(tProgress.value));
+    this.upstream = setUpstream();
     return this;
+  }
+
+  private Observable<Response<T>> setUpstream(){
+    return this.progressUpstream.map(tProgress -> Response.success(tProgress.value));
   }
 }

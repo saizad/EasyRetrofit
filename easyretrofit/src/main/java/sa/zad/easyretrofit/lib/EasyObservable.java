@@ -12,7 +12,6 @@ import rx.functions.Action1;
 import sa.zad.easyretrofit.transformers.ApiErrorTransformer;
 import sa.zad.easyretrofit.transformers.NeverErrorTransformer;
 import sa.zad.easyretrofit.transformers.RetrofitResponseOperator;
-import sa.zad.easyretrofit.utils.ObjectUtils;
 
 public class EasyObservable<T> extends Observable<T> {
 
@@ -27,7 +26,7 @@ public class EasyObservable<T> extends Observable<T> {
 
   @Override
   protected final void subscribeActual(Observer<? super T> observer) {
-    upstream.filter(response -> ObjectUtils.isNotNull(response.body())).map(Response::body).subscribe(observer);
+    upstream.map(Response::body).subscribe(observer);
   }
 
   /**

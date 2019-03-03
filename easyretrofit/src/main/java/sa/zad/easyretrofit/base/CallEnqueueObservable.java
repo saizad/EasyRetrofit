@@ -72,7 +72,7 @@ public class CallEnqueueObservable<T> extends Observable<Response<T>> implements
     observer.onError(throwable);
   }
 
-  protected void success(Response<T> response){
+  protected void success(Response<T> response) throws Exception{
     observer.onNext(response);
   }
 

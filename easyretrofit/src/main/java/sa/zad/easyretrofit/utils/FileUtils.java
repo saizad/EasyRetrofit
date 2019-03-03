@@ -28,6 +28,7 @@ public class FileUtils {
           output.write(buffer, 0, read);
           written += read;
           writtenAction.call(written);
+          throw new IOException("asdfasdf");
         }
         output.flush();
     } finally {

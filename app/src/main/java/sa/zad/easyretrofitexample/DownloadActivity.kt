@@ -50,7 +50,7 @@ class DownloadActivity : BaseActivity() {
             request_error.visibility = View.GONE
             service.download(url)
                     .onProgressStart({
-                    }, ObjectUtils.toInteger(min_processing_time.text.toString(), 1).toLong() * 100, 50)
+                    }, ObjectUtils.toInteger(min_processing_time.text.toString(), 1).toLong() * 1000, 50)
                     .progressUpdate {
                         progress_fab.setIndeterminate(false)
                         updateProgress(it)
