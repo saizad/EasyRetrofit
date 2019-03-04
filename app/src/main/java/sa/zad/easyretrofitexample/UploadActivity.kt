@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
 import sa.zad.easyretrofit.ProgressListener
-import sa.zad.easyretrofit.lib.UploadApiObservable
+import sa.zad.easyretrofit.lib.UploadObservable
 import sa.zad.easyretrofit.utils.Utils
 import sa.zad.easyretrofitexample.model.ErrorModel
 import java.io.File
@@ -65,7 +65,7 @@ class UploadActivity : BaseActivity() {
             progress_fab.setIndeterminate(true)
             progress_fab.setShowProgressBackground(true)
             request_error.visibility = View.GONE
-            service.uploadMedia(UploadApiObservable.part(selectedFile), "http://192.168.0.100:8000/api/media/upload_media/")
+            service.uploadMedia(UploadObservable.part(selectedFile), "http://192.168.0.100:8000/api/media/upload_media/")
                     .progressUpdate {
                         updateStatus(it)
                         progress_fab.setIndeterminate(false)

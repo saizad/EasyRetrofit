@@ -10,13 +10,13 @@ import retrofit2.Call;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.base.CallUploadEnqueueObservable;
-import sa.zad.easyretrofit.lib.UploadApiObservable;
+import sa.zad.easyretrofit.base.call.CallUploadEnqueueObservable;
+import sa.zad.easyretrofit.lib.UploadObservable;
 
-public class UploadApiCallAdapter<R> extends BaseRetrofitApiCallAdapter<ProgressListener.Progress<R>,
-    UploadApiObservable<R>, Observable<Response<ProgressListener.Progress<R>>>> {
+public class UploadCallAdapter<R> extends BaseRetrofitApiCallAdapter<ProgressListener.Progress<R>,
+    UploadObservable<R>, Observable<Response<ProgressListener.Progress<R>>>> {
 
-  public UploadApiCallAdapter(Type responseType) {
+  public UploadCallAdapter(Type responseType) {
     super(responseType);
   }
 
@@ -27,7 +27,7 @@ public class UploadApiCallAdapter<R> extends BaseRetrofitApiCallAdapter<Progress
   }
 
   @Override
-  protected UploadApiObservable<R> get(Observable<Response<ProgressListener.Progress<R>>> callMade, Request request) {
-    return new UploadApiObservable<>(callMade);
+  protected UploadObservable<R> get(Observable<Response<ProgressListener.Progress<R>>> callMade, Request request) {
+    return new UploadObservable<>(callMade);
   }
 }

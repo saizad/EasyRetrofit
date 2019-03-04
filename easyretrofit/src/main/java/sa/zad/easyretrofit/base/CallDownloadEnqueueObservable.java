@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.base.call.CallEnqueueObservable;
 
 public abstract class CallDownloadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> {
 

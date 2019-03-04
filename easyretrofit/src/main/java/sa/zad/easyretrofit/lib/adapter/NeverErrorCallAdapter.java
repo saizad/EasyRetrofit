@@ -8,9 +8,9 @@ import retrofit2.Response;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
 import sa.zad.easyretrofit.lib.NeverErrorObservable;
 
-public class RetrofitResponseApiCallAdapter<R> extends BaseRetrofitApiCallAdapter<R, NeverErrorObservable<R>, Observable<Response<R>>> {
+public class NeverErrorCallAdapter<R> extends BaseRetrofitApiCallAdapter<R, NeverErrorObservable<R>, Observable<Response<R>>> {
 
-  public RetrofitResponseApiCallAdapter(Type responseType) {
+  public NeverErrorCallAdapter(Type responseType) {
     super(responseType);
   }
 

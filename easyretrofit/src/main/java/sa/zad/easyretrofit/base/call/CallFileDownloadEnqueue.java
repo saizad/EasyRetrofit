@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.base;
+package sa.zad.easyretrofit.base.call;
 
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -11,11 +11,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.base.CallDownloadEnqueueObservable;
 import sa.zad.easyretrofit.utils.Utils;
 
-public class FileDownloadEnqueue extends CallDownloadEnqueueObservable<File> {
+public class CallFileDownloadEnqueue extends CallDownloadEnqueueObservable<File> {
 
-  public FileDownloadEnqueue(Call<ProgressListener.Progress<File>> originalCall) {
+  public CallFileDownloadEnqueue(Call<ProgressListener.Progress<File>> originalCall) {
     super(originalCall);
   }
 

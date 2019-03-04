@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava2.Result;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.base.CallEnqueueObservable;
+import sa.zad.easyretrofit.base.call.CallEnqueueObservable;
 import sa.zad.easyretrofit.base.ResultObservableConverter;
 
 public class DefaultCallAdapter<R> extends

@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.base;
+package sa.zad.easyretrofit.base.call;
 
 import android.support.annotation.CallSuper;
 
@@ -15,7 +15,7 @@ import rx.functions.Action1;
 public class CallObservable<T> extends Observable<Response<T>> implements Disposable {
 
   private final Call<T> originalCall;
-  Observer<? super Response<T>> observer;
+  protected Observer<? super Response<T>> observer;
   protected Call<T> call;
   private boolean terminated = false;
 

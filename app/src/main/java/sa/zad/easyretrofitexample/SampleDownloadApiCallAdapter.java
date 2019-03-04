@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 
-import sa.zad.easyretrofit.lib.adapter.DownloadApiCallAdapter;
+import sa.zad.easyretrofit.lib.adapter.FileDownloadCallAdapter;
 
-public class SampleDownloadApiCallAdapter extends DownloadApiCallAdapter {
+public class SampleDownloadApiCallAdapter extends FileDownloadCallAdapter {
 
   /*@Override
   protected void saveToDisk(ResponseBody body, File destinationFile, ProgressListener<File> progressListener) {

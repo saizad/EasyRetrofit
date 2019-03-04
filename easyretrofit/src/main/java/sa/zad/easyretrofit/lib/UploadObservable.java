@@ -12,9 +12,9 @@ import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.UploadRequestBody;
 
-public class UploadApiObservable<T> extends ProgressObservable<T> {
+public class UploadObservable<T> extends ProgressObservable<T> {
 
-  public UploadApiObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
+  public UploadObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream);
   }
 

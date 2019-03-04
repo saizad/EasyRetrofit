@@ -13,7 +13,7 @@ import retrofit2.http.Url;
 import sa.zad.easyretrofit.lib.FileDownloadObservable;
 import sa.zad.easyretrofit.lib.NeverErrorObservable;
 import sa.zad.easyretrofit.lib.ResultObservable;
-import sa.zad.easyretrofit.lib.UploadApiObservable;
+import sa.zad.easyretrofit.lib.UploadObservable;
 import sa.zad.easyretrofitexample.model.DataModel;
 import sa.zad.easyretrofitexample.model.MediaModel;
 import sa.zad.easyretrofitexample.model.Register;
@@ -38,10 +38,10 @@ interface Service {
 
   @Multipart
   @POST
-  UploadApiObservable<Void> upload(@Url String url, @Part MultipartBody.Part file);
+  UploadObservable<Void> upload(@Url String url, @Part MultipartBody.Part file);
 
   @Headers({"auth-token: 8d7b80ea-366d-498e-bdfa-5da53f93db5d"})
   @Multipart
   @POST
-  UploadApiObservable<DataModel<MediaModel>> uploadMedia(@Part MultipartBody.Part image, @Url String url);
+  UploadObservable<DataModel<MediaModel>> uploadMedia(@Part MultipartBody.Part image, @Url String url);
 }
