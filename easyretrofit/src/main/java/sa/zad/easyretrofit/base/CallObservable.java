@@ -15,7 +15,7 @@ import rx.functions.Action1;
 public class CallObservable<T> extends Observable<Response<T>> implements Disposable {
 
   private final Call<T> originalCall;
-  private Observer<? super Response<T>> observer;
+  Observer<? super Response<T>> observer;
   protected Call<T> call;
   private boolean terminated = false;
 
