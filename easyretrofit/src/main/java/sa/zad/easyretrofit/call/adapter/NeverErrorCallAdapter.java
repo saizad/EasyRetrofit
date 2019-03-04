@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib.adapter;
+package sa.zad.easyretrofit.call.adapter;
 
 import java.lang.reflect.Type;
 
@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import okhttp3.Request;
 import retrofit2.Response;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.lib.NeverErrorObservable;
+import sa.zad.easyretrofit.observables.NeverErrorObservable;
 
 public class NeverErrorCallAdapter<R> extends BaseRetrofitApiCallAdapter<R, NeverErrorObservable<R>, Observable<Response<R>>> {
 

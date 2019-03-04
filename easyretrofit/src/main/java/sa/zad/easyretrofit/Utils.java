@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.utils;
+package sa.zad.easyretrofit;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

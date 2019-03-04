@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.base.call;
+package sa.zad.easyretrofit.call;
 
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.Utils;
 import sa.zad.easyretrofit.base.CallDownloadEnqueueObservable;
-import sa.zad.easyretrofit.utils.Utils;
 
 public class CallFileDownloadEnqueue extends CallDownloadEnqueueObservable<File> {
 
@@ -28,9 +28,9 @@ public class CallFileDownloadEnqueue extends CallDownloadEnqueueObservable<File>
   }
 
   @NonNull
-  protected File saveTo(HttpUrl url) throws Exception{
+  protected File saveTo(HttpUrl url) throws Exception {
     File file = new File(new URI(url.toString()).getPath());
     return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-        file.getName());
+        (int) (Math.random() * 50 + 1) + "_" + file.getName());
   }
 }

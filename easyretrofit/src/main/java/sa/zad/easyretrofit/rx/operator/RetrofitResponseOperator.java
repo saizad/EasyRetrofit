@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.transformers;
+package sa.zad.easyretrofit.rx.operator;
 
 import retrofit2.Response;
 import sa.zad.easyretrofit.ResponseException;

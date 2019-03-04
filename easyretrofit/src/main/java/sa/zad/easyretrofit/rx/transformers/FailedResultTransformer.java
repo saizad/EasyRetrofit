@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.transformers;
+package sa.zad.easyretrofit.rx.transformers;
 
 import android.support.annotation.Nullable;
 
@@ -6,11 +6,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import retrofit2.adapter.rxjava2.Result;
 import rx.functions.Action1;
-import sa.zad.easyretrofit.ResponseException;
 
-public class FailedResponseTransformer<T> extends BaseErrorTransformer<Result<T>, ResponseException> {
+public class FailedResultTransformer<T> extends BaseErrorTransformer<Result<T>, Throwable> {
 
-  public FailedResponseTransformer(@Nullable Action1<ResponseException> action) {
+  public FailedResultTransformer(@Nullable Action1<Throwable> action) {
     super(action);
   }
 
@@ -18,8 +17,8 @@ public class FailedResponseTransformer<T> extends BaseErrorTransformer<Result<T>
   public ObservableSource<Result<T>> apply(Observable<Result<T>> upstream) {
     return upstream
         .flatMap(tResult -> {
-          if (!tResult.isError() && !tResult.response().isSuccessful()) {
-            callAction(new ResponseException(tResult.response()));
+          if (tResult.isError()) {
+            callAction(tResult.error());
             return Observable.empty();
           }
           return Observable.just(tResult);

@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_download_observable.*
 import sa.zad.easyretrofit.ProgressListener
-import sa.zad.easyretrofit.utils.Utils
+import sa.zad.easyretrofit.Utils
 
 
 class DownloadActivity : BaseActivity() {
@@ -58,13 +58,13 @@ class DownloadActivity : BaseActivity() {
                         progress_fab.setIndeterminate(false)
                         updateProgress(it)
                     }.successResponse {
-                        toast("Upload Completed")
+                        toast("Download Completed")
                     }.exception {
                         request_error.text = it.message
                         request_error.visibility = View.VISIBLE
                         progress_fab.hideProgress()
                     }.doFinally {
-//                        progress_fab.hideProgress()
+                        progress_fab.hideProgress()
                     }.subscribe()
         }
     }

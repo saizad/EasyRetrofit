@@ -43,6 +43,7 @@ class ResultObservableActivity : BaseActivity() {
                 .failedResponse { failed("Failed Response: " + it?.message!!) }
                 .flatMap {
                     val user = it.response()?.body()?.data
+                    log(user?.avatar)
                     service.download(user?.avatar).map {
                         Pair<File, String>(it,
                                 getString(R.string.name, user?.first_name, user?.last_name))

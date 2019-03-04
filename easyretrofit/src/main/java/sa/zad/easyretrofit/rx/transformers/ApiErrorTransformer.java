@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.transformers;
+package sa.zad.easyretrofit.rx.transformers;
 
 import android.support.annotation.Nullable;
 

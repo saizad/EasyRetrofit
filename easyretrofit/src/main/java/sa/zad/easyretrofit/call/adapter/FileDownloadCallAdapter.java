@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib.adapter;
+package sa.zad.easyretrofit.call.adapter;
 
 import android.support.annotation.NonNull;
 
@@ -9,8 +9,8 @@ import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
-import sa.zad.easyretrofit.base.call.CallFileDownloadEnqueue;
-import sa.zad.easyretrofit.lib.FileDownloadObservable;
+import sa.zad.easyretrofit.call.CallFileDownloadEnqueue;
+import sa.zad.easyretrofit.observables.FileDownloadObservable;
 
 public class FileDownloadCallAdapter extends DownloadApiCallAdapter<File> {
 

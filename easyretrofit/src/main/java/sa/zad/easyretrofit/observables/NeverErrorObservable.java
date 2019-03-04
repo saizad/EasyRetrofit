@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib;
+package sa.zad.easyretrofit.observables;
 
 
 import android.support.annotation.NonNull;
@@ -11,9 +11,9 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ResponseException;
-import sa.zad.easyretrofit.transformers.ApiErrorTransformer;
-import sa.zad.easyretrofit.transformers.NeverErrorTransformer;
-import sa.zad.easyretrofit.transformers.RetrofitResponseOperator;
+import sa.zad.easyretrofit.rx.transformers.ApiErrorTransformer;
+import sa.zad.easyretrofit.rx.transformers.NeverErrorTransformer;
+import sa.zad.easyretrofit.rx.operator.RetrofitResponseOperator;
 
 /**
  * <p>This Observable class prevents from triggering any kind of {@link Exception}.

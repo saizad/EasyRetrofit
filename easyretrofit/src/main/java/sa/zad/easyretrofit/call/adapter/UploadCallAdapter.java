@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib.adapter;
+package sa.zad.easyretrofit.call.adapter;
 
 import android.support.annotation.NonNull;
 
@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.base.call.CallUploadEnqueueObservable;
-import sa.zad.easyretrofit.lib.UploadObservable;
+import sa.zad.easyretrofit.call.CallUploadEnqueueObservable;
+import sa.zad.easyretrofit.observables.UploadObservable;
 
 public class UploadCallAdapter<R> extends BaseRetrofitApiCallAdapter<ProgressListener.Progress<R>,
     UploadObservable<R>, Observable<Response<ProgressListener.Progress<R>>>> {

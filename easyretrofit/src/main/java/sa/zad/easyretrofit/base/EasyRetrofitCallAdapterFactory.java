@@ -7,15 +7,15 @@ import java.lang.reflect.Type;
 
 import retrofit2.Call;
 import retrofit2.CallAdapter;
-import sa.zad.easyretrofit.lib.FileDownloadObservable;
-import sa.zad.easyretrofit.lib.NeverErrorObservable;
-import sa.zad.easyretrofit.lib.ResultObservable;
-import sa.zad.easyretrofit.lib.UploadObservable;
-import sa.zad.easyretrofit.lib.adapter.DefaultCallAdapter;
-import sa.zad.easyretrofit.lib.adapter.FileDownloadCallAdapter;
-import sa.zad.easyretrofit.lib.adapter.NeverErrorCallAdapter;
-import sa.zad.easyretrofit.lib.adapter.RetrofitResultApiCallAdapter;
-import sa.zad.easyretrofit.lib.adapter.UploadCallAdapter;
+import sa.zad.easyretrofit.observables.FileDownloadObservable;
+import sa.zad.easyretrofit.observables.NeverErrorObservable;
+import sa.zad.easyretrofit.observables.ResultObservable;
+import sa.zad.easyretrofit.observables.UploadObservable;
+import sa.zad.easyretrofit.call.adapter.DefaultCallAdapter;
+import sa.zad.easyretrofit.call.adapter.FileDownloadCallAdapter;
+import sa.zad.easyretrofit.call.adapter.NeverErrorCallAdapter;
+import sa.zad.easyretrofit.call.adapter.RetrofitResultApiCallAdapter;
+import sa.zad.easyretrofit.call.adapter.UploadCallAdapter;
 
 public class EasyRetrofitCallAdapterFactory extends BaseEasyRetrofitCallAdapterFactory {
 

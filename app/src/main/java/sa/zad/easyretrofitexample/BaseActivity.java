@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
-import sa.zad.easyretrofit.utils.Utils;
+import sa.zad.easyretrofit.Utils;
 
 
 public abstract class BaseActivity extends AppCompatActivity {

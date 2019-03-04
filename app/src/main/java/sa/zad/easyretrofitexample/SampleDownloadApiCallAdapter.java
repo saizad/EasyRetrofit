@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.io.File;
 
-import sa.zad.easyretrofit.lib.adapter.FileDownloadCallAdapter;
+import sa.zad.easyretrofit.call.adapter.FileDownloadCallAdapter;
 
 public class SampleDownloadApiCallAdapter extends FileDownloadCallAdapter {
 

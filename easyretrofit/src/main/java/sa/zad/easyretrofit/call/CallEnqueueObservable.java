@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package sa.zad.easyretrofit.base.call;
+package sa.zad.easyretrofit.call;
 
 import android.support.annotation.NonNull;
 

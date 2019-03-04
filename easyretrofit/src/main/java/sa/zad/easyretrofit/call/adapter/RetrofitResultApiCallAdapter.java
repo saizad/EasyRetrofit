@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib.adapter;
+package sa.zad.easyretrofit.call.adapter;
 
 import java.lang.reflect.Type;
 
@@ -7,7 +7,7 @@ import okhttp3.Request;
 import retrofit2.Response;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
 import sa.zad.easyretrofit.base.ResultObservableConverter;
-import sa.zad.easyretrofit.lib.ResultObservable;
+import sa.zad.easyretrofit.observables.ResultObservable;
 
 public class RetrofitResultApiCallAdapter<R> extends
     BaseRetrofitApiCallAdapter<R, ResultObservable<R>, Observable<Response<R>>> {

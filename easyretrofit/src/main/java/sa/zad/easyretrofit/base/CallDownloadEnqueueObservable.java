@@ -8,7 +8,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
-import sa.zad.easyretrofit.base.call.CallEnqueueObservable;
+import sa.zad.easyretrofit.call.CallEnqueueObservable;
 
 public abstract class CallDownloadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> {
 
@@ -25,12 +25,11 @@ public abstract class CallDownloadEnqueueObservable<T> extends CallEnqueueObserv
       Response<Object> responseBodyResponse = Response.success(response.body());
       final ResponseBody responseBody = (ResponseBody) responseBodyResponse.body();
       final long startTime = System.currentTimeMillis();
-      final T t = responseBodyReady(responseBody, response.raw().request().url(), written -> {
-        ProgressListener.Progress<T> update = new ProgressListener.Progress<>(responseBody.contentLength(), startTime);
-        update.setWritten(written);
-        observer.onNext(Response.success(update));
-      });
       ProgressListener.Progress<T> progress = new ProgressListener.Progress<>(responseBody.contentLength(), startTime);
+      final T t = responseBodyReady(responseBody, response.raw().request().url(), written -> {
+        progress.setWritten(written);
+        observer.onNext(Response.success(progress));
+      });
       progress.setWritten(progress.size);
       progress.setValue(t);
       observer.onNext(Response.success(progress));

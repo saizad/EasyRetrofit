@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 
 import retrofit2.CallAdapter;
 import sa.zad.easyretrofit.base.EasyRetrofitCallAdapterFactory;
-import sa.zad.easyretrofit.lib.FileDownloadObservable;
+import sa.zad.easyretrofit.observables.FileDownloadObservable;
 
 public class SampleEasyRetrofitCallAdapterFactory extends EasyRetrofitCallAdapterFactory {
   @Nullable

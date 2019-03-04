@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.transformers;
+package sa.zad.easyretrofit.rx.transformers;
 
 import android.support.annotation.Nullable;
 
@@ -6,24 +6,24 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import rx.functions.Action1;
-import sa.zad.easyretrofit.utils.Utils;
+import sa.zad.easyretrofit.Utils;
 
-public abstract class BaseTransformer<T> implements ObservableTransformer<T, T> {
+public abstract class BaseErrorTransformer<T, E extends Throwable> implements ObservableTransformer<T, T> {
   protected final @Nullable
-   Action1<T> action;
+  Action1<E> action;
 
-  BaseTransformer() {
+  BaseErrorTransformer() {
     this(null);
   }
 
-  BaseTransformer(final @Nullable Action1<T> action) {
+  BaseErrorTransformer(final @Nullable Action1<E> action) {
     this.action = action;
   }
 
   @Override
   public abstract ObservableSource<T> apply(Observable<T> upstream);
 
-  void callAction(T call) {
+  void callAction(E call) {
     if (Utils.isNotNull(action) && Utils.isNotNull(call)) {
       action.call(call);
     }

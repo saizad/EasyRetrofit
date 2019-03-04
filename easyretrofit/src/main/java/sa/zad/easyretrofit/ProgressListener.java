@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
-import sa.zad.easyretrofit.utils.Utils;
-
 
 public interface ProgressListener<R> {
   void onProgressStart(@NonNull Progress<R> progress);
@@ -64,8 +62,8 @@ public interface ProgressListener<R> {
       this.value = value;
     }
 
-    public boolean hasValue() {
-      return Utils.isNotNull(value);
+    public boolean isCompleted(){
+      return written == size;
     }
 
     @NonNull

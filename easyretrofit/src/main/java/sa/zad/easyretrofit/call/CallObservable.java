@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.base.call;
+package sa.zad.easyretrofit.call;
 
 import android.support.annotation.CallSuper;
 

@@ -12,9 +12,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
 import sa.zad.easyretrofit.ProgressListener
-import sa.zad.easyretrofit.lib.UploadObservable
-import sa.zad.easyretrofit.utils.Utils
-import sa.zad.easyretrofitexample.model.ErrorModel
+import sa.zad.easyretrofit.Utils
+import sa.zad.easyretrofit.observables.UploadObservable
 import java.io.File
 
 
@@ -65,20 +64,18 @@ class UploadActivity : BaseActivity() {
             progress_fab.setIndeterminate(true)
             progress_fab.setShowProgressBackground(true)
             request_error.visibility = View.GONE
-            service.uploadMedia(UploadObservable.part(selectedFile), "http://192.168.0.100:8000/api/media/upload_media/")
+            service.upload("http://www.csm-testcenter.org/test", UploadObservable.part(selectedFile))
+                    .onProgressStart({
+                    }, Utils.toInteger(min_processing_time.text.toString(), 1).toLong() * 1000, 50)
                     .progressUpdate {
                         updateStatus(it)
                         progress_fab.setIndeterminate(false)
                         progress_fab.setProgress(it.progress.toInt(), false)
                     }.onProgressCompleted {
                         updateStatus(it)
-                    }
-                    .failedResponse {
+                    }.failedResponse {
                         toast("Failed Response received " + it.code())
-                    }.apiException({
-                        error(it.error.description)
-                    }, ErrorModel::class.java)
-                    .successResponse {
+                    }.successResponse {
                         toast("Success Response received")
                     }.exception {
                         error(it.message!!)

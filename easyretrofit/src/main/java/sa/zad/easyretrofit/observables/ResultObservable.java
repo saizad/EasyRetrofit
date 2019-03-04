@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib;
+package sa.zad.easyretrofit.observables;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -8,9 +8,9 @@ import retrofit2.Response;
 import retrofit2.adapter.rxjava2.Result;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ResponseException;
-import sa.zad.easyretrofit.transformers.FailedResponseTransformer;
-import sa.zad.easyretrofit.transformers.FailedResultTransformer;
-import sa.zad.easyretrofit.transformers.NeverErrorTransformer;
+import sa.zad.easyretrofit.rx.transformers.FailedResponseTransformer;
+import sa.zad.easyretrofit.rx.transformers.FailedResultTransformer;
+import sa.zad.easyretrofit.rx.transformers.NeverErrorTransformer;
 
 public class ResultObservable<T> extends Observable<Result<T>> {
 

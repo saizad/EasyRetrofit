@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.lib;
+package sa.zad.easyretrofit.observables;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +9,6 @@ import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
 
 /**
- *
  * This observable class provides progress updates for both uploads and downloads
  */
 public class ProgressObservable<T> extends NeverErrorObservable<T> {
@@ -29,18 +28,18 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
       Ignores any errors on {@link ProgressObservable}
       Todo temp fixed, there might be unknown side affects
      */
-    RxJavaPlugins.setErrorHandler(throwable -> { });
+    RxJavaPlugins.setErrorHandler(throwable -> {
+    });
   }
 
   /**
-   *
    * <p>Emits progress updates.</p>
-   *
+   * <p>
    * <br/>
    * <dl>
-   *  <dt><b>Note:</b></dt>
-   *  <dd>Call this method before {@link #onProgressCompleted(Action1) onProgressCompleted}
-   *  and {@link #onProgressStart(Action1, Long, Long) onProgressStart} if it's chained.</dd>
+   * <dt><b>Note:</b></dt>
+   * <dd>Call this method before {@link #onProgressCompleted(Action1) onProgressCompleted}
+   * and {@link #onProgressStart(Action1, Long, Long) onProgressStart} if it's chained.</dd>
    * </dl>
    *
    * @param progressAction progress update callback
@@ -49,7 +48,7 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
 
   public ProgressObservable<T> progressUpdate(Action1<ProgressListener.Progress<T>> progressAction) {
     this.progressUpstream = this.progressUpstream.doOnNext(progress -> {
-      if (!progress.hasValue())
+      if (!progress.isCompleted())
         progressAction.call(progress);
     });
     this.upstream = setUpstream();
@@ -63,12 +62,12 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
   /**
    * <p>Emits progress completed. If error is encountered during progress,
    * progressCompletedAction will not receive call back.</p>
-   *
+   * <p>
    * <br/>
    * <dl>
-   *  <dt><b>Note:</b></dt>
-   *  <dd>Call this method at very last i.e. after {@link #onProgressStart(Action1, Long, Long) onProgressStart}
-   *    and {@link #progressUpdate(Action1) progressUpdate} if it is chained.</dd>
+   * <dt><b>Note:</b></dt>
+   * <dd>Call this method at very last i.e. after {@link #onProgressStart(Action1, Long, Long) onProgressStart}
+   * and {@link #progressUpdate(Action1) progressUpdate} if it is chained.</dd>
    * </dl>
    *
    * @param progressCompletedAction callback
@@ -84,27 +83,27 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
   }
 
   /**
-   *
-   *<p>Receive progress start update for uploading/downloading</p>
-   *<br/>
+   * <p>Receive progress start update for uploading/downloading</p>
+   * <br/>
    * <dl>
-   *   <dt><b>Note:</b></dt>
-   *   <dd>Call this method before {@link #progressUpdate(Action1) progressUpdate} and
-   *    {@link #onProgressCompleted(Action1) onProgressCompleted}</dd>
+   * <dt><b>Note:</b></dt>
+   * <dd>Call this method before {@link #progressUpdate(Action1) progressUpdate} and
+   * {@link #onProgressCompleted(Action1) onProgressCompleted}</dd>
    * </dl>
    *
    * @param progressStartAction progress action listener
-   * @param waitFor receive progress updates for millis
-   * @param minRemaining continue receiving progress updates after waitFor period is over
+   * @param waitFor             receive progress updates for millis
+   * @param minRemaining        continue receiving progress updates after waitFor period is over
    * @return {@link ProgressObservable}
    */
+
 
   public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>>
                                                    progressStartAction, Long waitFor, Long minRemaining) {
     this.progressUpstream = this.progressUpstream
         .skipWhile(progress -> {
           if ((progress.elapsedTime() < waitFor || progress.timeRemaining() < minRemaining)
-              && !progress.hasValue()) {
+              && !progress.isCompleted()) {
             progressStartAction.call(progress);
             return true;
           }

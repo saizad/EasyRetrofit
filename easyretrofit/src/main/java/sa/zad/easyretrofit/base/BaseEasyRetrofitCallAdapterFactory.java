@@ -12,7 +12,7 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.Result;
-import sa.zad.easyretrofit.lib.FileDownloadObservable;
+import sa.zad.easyretrofit.observables.FileDownloadObservable;
 
 public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Factory {
 

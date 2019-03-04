@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
-import sa.zad.easyretrofit.base.call.CallObservable;
+import sa.zad.easyretrofit.call.CallObservable;
 
 public abstract class BaseRetrofitApiCallAdapter<R, T, C> implements CallAdapter<R, T> {
 
