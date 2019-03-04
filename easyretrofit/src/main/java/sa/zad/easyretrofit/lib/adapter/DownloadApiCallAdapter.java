@@ -12,9 +12,9 @@ import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
 import sa.zad.easyretrofit.base.FileDownloadEnqueue;
-import sa.zad.easyretrofit.lib.DownloadApiObservable;
+import sa.zad.easyretrofit.lib.FileDownloadObservable;
 
-public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ProgressListener.Progress<File>, DownloadApiObservable, Observable<Response<ProgressListener.Progress<File>>>> {
+public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ProgressListener.Progress<File>, FileDownloadObservable, Observable<Response<ProgressListener.Progress<File>>>> {
 
   public DownloadApiCallAdapter() {
     super(ResponseBody.class);
@@ -27,7 +27,7 @@ public class DownloadApiCallAdapter extends BaseRetrofitApiCallAdapter<ProgressL
   }
 
   @Override
-  protected DownloadApiObservable get(Observable<Response<ProgressListener.Progress<File>>> callMade, Request request) {
-    return new DownloadApiObservable(callMade);
+  protected FileDownloadObservable get(Observable<Response<ProgressListener.Progress<File>>> callMade, Request request) {
+    return new FileDownloadObservable(callMade);
   }
 }

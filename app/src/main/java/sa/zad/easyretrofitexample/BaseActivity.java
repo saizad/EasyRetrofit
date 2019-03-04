@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
-import sa.zad.easyretrofit.utils.ObjectUtils;
+import sa.zad.easyretrofit.utils.Utils;
 
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -58,7 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     return activityResultPublishSubject.filter(activityResult ->
         activityResult.resultCode == RESULT_OK
             && activityResult.requestCode == requestCode
-            && ObjectUtils.isNotNull(activityResult.data))
+            && Utils.isNotNull(activityResult.data))
         .map(activityResult -> activityResult.data);
   }
 

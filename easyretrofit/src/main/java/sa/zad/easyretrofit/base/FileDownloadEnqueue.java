@@ -11,7 +11,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
-import sa.zad.easyretrofit.utils.FileUtils;
+import sa.zad.easyretrofit.utils.Utils;
 
 public class FileDownloadEnqueue extends CallDownloadEnqueueObservable<File> {
 
@@ -22,7 +22,7 @@ public class FileDownloadEnqueue extends CallDownloadEnqueueObservable<File> {
   @Override
   protected final File responseBodyReady(@NonNull ResponseBody responseBody, HttpUrl url, Action1<Integer> writtenCallback) throws Exception {
     final File saveTo = saveTo(url);
-    FileUtils.writeStreamToFile(responseBody.byteStream(), saveTo, writtenCallback);
+    Utils.writeStreamToFile(responseBody.byteStream(), saveTo, writtenCallback);
     return saveTo;
   }
 

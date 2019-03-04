@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import rx.functions.Action1;
-import sa.zad.easyretrofit.utils.ObjectUtils;
+import sa.zad.easyretrofit.utils.Utils;
 
 public abstract class BaseErrorTransformer<T, E extends Throwable> implements ObservableTransformer<T, T> {
   protected final @Nullable
@@ -24,7 +24,7 @@ public abstract class BaseErrorTransformer<T, E extends Throwable> implements Ob
   public abstract ObservableSource<T> apply(Observable<T> upstream);
 
   void callAction(E call) {
-    if (ObjectUtils.isNotNull(action) && ObjectUtils.isNotNull(call)) {
+    if (Utils.isNotNull(action) && Utils.isNotNull(call)) {
       action.call(call);
     }
   }

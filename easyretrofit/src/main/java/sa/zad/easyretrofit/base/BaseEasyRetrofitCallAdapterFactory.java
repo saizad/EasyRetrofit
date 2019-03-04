@@ -12,7 +12,7 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.Result;
-import sa.zad.easyretrofit.lib.DownloadApiObservable;
+import sa.zad.easyretrofit.lib.FileDownloadObservable;
 
 public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Factory {
 
@@ -27,8 +27,8 @@ public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Fac
     if (rawType == Completable.class)
       return getCallAdapter(Completable.class, Void.class, Void.class);
 
-    if (rawType == DownloadApiObservable.class)
-      return getCallAdapter(DownloadApiObservable.class, null, null);
+    if (rawType == FileDownloadObservable.class)
+      return getCallAdapter(FileDownloadObservable.class, null, null);
 
     Type responseType;
     if (!(returnType instanceof ParameterizedType)) {

@@ -6,16 +6,16 @@ import io.reactivex.Observable;
 import okhttp3.Request;
 import retrofit2.Response;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.lib.EasyObservable;
+import sa.zad.easyretrofit.lib.NeverErrorObservable;
 
-public class RetrofitResponseApiCallAdapter<R> extends BaseRetrofitApiCallAdapter<R, EasyObservable<R>, Observable<Response<R>>> {
+public class RetrofitResponseApiCallAdapter<R> extends BaseRetrofitApiCallAdapter<R, NeverErrorObservable<R>, Observable<Response<R>>> {
 
   public RetrofitResponseApiCallAdapter(Type responseType) {
     super(responseType);
   }
 
   @Override
-  protected EasyObservable<R> get(Observable<Response<R>> observable, Request request) {
-    return new EasyObservable<>(observable);
+  protected NeverErrorObservable<R> get(Observable<Response<R>> observable, Request request) {
+    return new NeverErrorObservable<>(observable);
   }
 }

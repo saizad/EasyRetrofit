@@ -6,9 +6,9 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 
-public class DownloadApiObservable extends ProgressObservable<File> {
+public class FileDownloadObservable extends ProgressObservable<File> {
 
-  public DownloadApiObservable(Observable<Response<ProgressListener.Progress<File>>> upstream) {
+  public FileDownloadObservable(Observable<Response<ProgressListener.Progress<File>>> upstream) {
     super(upstream);
   }
 }

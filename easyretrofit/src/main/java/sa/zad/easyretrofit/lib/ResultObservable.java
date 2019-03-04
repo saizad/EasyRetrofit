@@ -42,7 +42,7 @@ public class ResultObservable<T> extends Observable<Result<T>> {
   }
 
   /**
-   * if it's {@link Result#error()} @param resultError callback will be triggered and {@link Observer#onComplete()} will be followed.
+   * if it's {@link Result#error() error} resultError callback will be triggered and {@link Observer#onComplete()} will be followed.
    *
    * @param resultError failed result callback
    * @return {@link ResultObservable}

@@ -29,7 +29,7 @@ public abstract class BaseRetrofitApiCallAdapter<R, T, C> implements CallAdapter
 
   @NonNull
   protected C call(Call<R> call){
-    return (C) new CallExecuteObservable(call);
+    return (C) new CallObservable<>(call);
   }
 
   protected abstract T get(C callMade, Request request);

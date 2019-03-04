@@ -15,84 +15,32 @@
  */
 package sa.zad.easyretrofit.base;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.exceptions.CompositeException;
-import io.reactivex.exceptions.Exceptions;
-import io.reactivex.plugins.RxJavaPlugins;
+import android.support.annotation.NonNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import rx.functions.Action1;
 
-public class CallEnqueueObservable<T> extends Observable<Response<T>> implements Disposable, Callback<T>{
-  private final Call<T> originalCall;
-  private Call<T> call;
-  protected Observer<? super Response<T>> observer;
-  private boolean terminated = false;
+public class CallEnqueueObservable<T> extends CallObservable<T> {
 
   public CallEnqueueObservable(Call<T> originalCall) {
-    this.originalCall = originalCall;
+    super(originalCall);
   }
 
-  @Override protected void subscribeActual(Observer<? super Response<T>> observer) {
-    // Since Call is a one-shot type, clone it for each new observer.
-    this.observer = observer;
-    call = originalCall.clone();
-    observer.onSubscribe(this);
-    call.enqueue(this);
-  }
-
-
-  @Override public final void onResponse(Call<T> call, Response<T> response) {
-    if (call.isCanceled()) return;
-
-    try {
-      success(response);
-
-      if (!call.isCanceled()) {
-        terminated = true;
-        observer.onComplete();
+  @Override
+  protected void init(Action1<? super Response<T>> responseAction, Action1<Throwable> throwableAction)   {
+    call.enqueue(new Callback<T>() {
+      @Override
+      public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+        responseAction.call(response);
       }
-    } catch (Throwable t) {
-      if (terminated) {
-        RxJavaPlugins.onError(t);
-      } else if (!call.isCanceled()) {
-        try {
-          failed(t);
-        } catch (Throwable inner) {
-          Exceptions.throwIfFatal(inner);
-          RxJavaPlugins.onError(new CompositeException(t, inner));
-        }
+
+      @Override
+      public void onFailure(@NonNull retrofit2.Call<T> call, @NonNull Throwable t) {
+        if (call.isCanceled()) return;
+        throwableAction.call(t);
       }
-    }
+    });
   }
-
-  protected void failed(Throwable throwable){
-    observer.onError(throwable);
-  }
-
-  protected void success(Response<T> response) throws Exception{
-    observer.onNext(response);
-  }
-
-  @Override public final void onFailure(Call<T> call, Throwable t) {
-    if (call.isCanceled()) return;
-
-    try {
-      failed(t);
-    } catch (Throwable inner) {
-      Exceptions.throwIfFatal(inner);
-      RxJavaPlugins.onError(new CompositeException(t, inner));
-    }
-  }
-
-  @Override public final void dispose() {
-    call.cancel();
-  }
-
-  @Override public final boolean isDisposed() {
-    return call.isCanceled();
-  }
-
 }

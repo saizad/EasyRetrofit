@@ -1,6 +1,11 @@
 package sa.zad.easyretrofitexample;
 
 import android.app.Application;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.Toast;
+
+import io.reactivex.plugins.RxJavaPlugins;
 
 public class Sample extends Application {
 
@@ -15,11 +20,11 @@ public class Sample extends Application {
   public void onCreate() {
     super.onCreate();
     service = new SampleEasyRetrofit(this).provideRetrofit().create(Service.class);
-    /*RxJavaPlugins.setErrorHandler(throwable -> {
+    RxJavaPlugins.setErrorHandler(throwable -> {
       final Handler handler = new Handler((getMainLooper()));
       handler.post(()-> Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_SHORT).show());
       Log.d("Sample", "App Exception " + throwable.getMessage());
-    });*/
+    });
   }
 
   public static Sample getInstance(){

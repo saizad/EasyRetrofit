@@ -12,7 +12,7 @@ import java.util.List;
 
 import rx.functions.Func2;
 import sa.zad.easyretrofit.ResponseException;
-import sa.zad.easyretrofit.utils.StringUtils;
+import sa.zad.easyretrofit.utils.Utils;
 
 
 public class ErrorModel implements Serializable {
@@ -59,11 +59,11 @@ public class ErrorModel implements Serializable {
         }
       }
     }
-    return StringUtils.stripTrailingLeadingNewLines(message.toString());
+    return Utils.stripTrailingLeadingNewLines(message.toString());
   }
 
   public static Error buildNewErrorField(Error error, String fieldName, String message){
-    if(!StringUtils.isNullOrEmpty(message)){
+    if(!Utils.isNullOrEmpty(message)){
       error.fields.add(new ErrorFields(message, fieldName));
     }
     return error;

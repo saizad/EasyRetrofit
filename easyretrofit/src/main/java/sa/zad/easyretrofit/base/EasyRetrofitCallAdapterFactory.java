@@ -7,8 +7,8 @@ import java.lang.reflect.Type;
 
 import retrofit2.Call;
 import retrofit2.CallAdapter;
-import sa.zad.easyretrofit.lib.DownloadApiObservable;
-import sa.zad.easyretrofit.lib.EasyObservable;
+import sa.zad.easyretrofit.lib.FileDownloadObservable;
+import sa.zad.easyretrofit.lib.NeverErrorObservable;
 import sa.zad.easyretrofit.lib.ResultObservable;
 import sa.zad.easyretrofit.lib.UploadApiObservable;
 import sa.zad.easyretrofit.lib.adapter.DefaultCallAdapter;
@@ -25,7 +25,7 @@ public class EasyRetrofitCallAdapterFactory extends BaseEasyRetrofitCallAdapterF
   protected CallAdapter<?, ?> getCallAdapter(Class<?> rawType, @Nullable  Type responseType,
                                              @Nullable Class<?> parameterizedType) {
 
-    if(rawType == DownloadApiObservable.class)
+    if(rawType == FileDownloadObservable.class)
       return new DownloadApiCallAdapter();
 
     if(rawType == ResultObservable.class)
@@ -34,7 +34,7 @@ public class EasyRetrofitCallAdapterFactory extends BaseEasyRetrofitCallAdapterF
     if(rawType == UploadApiObservable.class)
       return new UploadApiCallAdapter<>(responseType);
 
-    if(rawType == EasyObservable.class)
+    if(rawType == NeverErrorObservable.class)
       return new RetrofitResponseApiCallAdapter<>(responseType);
 
     if(rawType == Call.class)

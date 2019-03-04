@@ -13,8 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
 import sa.zad.easyretrofit.ProgressListener
 import sa.zad.easyretrofit.lib.UploadApiObservable
-import sa.zad.easyretrofit.utils.FileUtils
-import sa.zad.easyretrofit.utils.ObjectUtils
+import sa.zad.easyretrofit.utils.Utils
 import sa.zad.easyretrofitexample.model.ErrorModel
 import java.io.File
 
@@ -46,10 +45,10 @@ class UploadActivity : BaseActivity() {
 
         result(1)
                 .subscribeOn(Schedulers.io())
-                .filter { ObjectUtils.isNotNull(it.data) }
+                .filter { Utils.isNotNull(it.data) }
                 .map {
                     val file = File.createTempFile("temp_", "." + File(getFileName(it.data)).extension)
-                    FileUtils.writeStreamToFile(contentResolver.openInputStream(it.data), file)
+                    Utils.writeStreamToFile(contentResolver.openInputStream(it.data), file)
                     return@map file
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ file ->
@@ -72,12 +71,16 @@ class UploadActivity : BaseActivity() {
                         progress_fab.setIndeterminate(false)
                         progress_fab.setProgress(it.progress.toInt(), false)
                     }.onProgressCompleted {
-                        toast("Upload Completed")
                         updateStatus(it)
+                    }
+                    .failedResponse {
+                        toast("Failed Response received " + it.code())
                     }.apiException({
                         error(it.error.description)
                     }, ErrorModel::class.java)
-                    .neverException {
+                    .successResponse {
+                        toast("Success Response received")
+                    }.exception {
                         error(it.message!!)
                     }.doFinally {
                         progress_fab.hideProgress()
