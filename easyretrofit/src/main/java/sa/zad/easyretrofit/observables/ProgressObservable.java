@@ -3,7 +3,6 @@ package sa.zad.easyretrofit.observables;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
-import io.reactivex.plugins.RxJavaPlugins;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
@@ -14,22 +13,41 @@ import sa.zad.easyretrofit.ProgressListener;
 public class ProgressObservable<T> extends NeverErrorObservable<T> {
 
   private Observable<ProgressListener.Progress<T>> progressUpstream;
+  private long throttle = 1000;
 
   ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream.takeLast(1).map(progressResponse -> Response.success(progressResponse.body().value)));
 
-    final Observable<Response<ProgressListener.Progress<T>>> windowUpstream = upstream
+    /*final Observable<Response<ProgressListener.Progress<T>>> windowUpstream = upstream
         .window(30, TimeUnit.MILLISECONDS)
-        .flatMap(responseObservable -> responseObservable.takeLast(1));
+        .flatMap(responseObservable -> responseObservable.takeLast(1));*/
 
-    progressUpstream = new NeverErrorObservable<>(windowUpstream);
+    progressUpstream = new NeverErrorObservable<>(upstream);
+  }
 
-    /*
-      Ignores any errors on {@link ProgressObservable}
-      Todo temp fixed, there might be unknown side affects
-     */
-    RxJavaPlugins.setErrorHandler(throwable -> {
-    });
+  /**
+   * <p>set throttle for onProgressStart and progressUpdate callback</p>
+   * <br/>
+   * <dl>
+   * <dt><b>Note:</b></dt>
+   * <dd>Note any throttle applied here will affect on all progress callbacks</dd>
+   * </dl>
+   *
+   * @param throttle set in millis
+   * @return {@link ProgressObservable}
+   */
+
+  public ProgressObservable<T> applyThrottle(long throttle) {
+    this.throttle = throttle;
+    return this;
+  }
+
+  /**
+   * @see #progressUpdate(Action1, long) for docs
+   */
+
+  public ProgressObservable<T> progressUpdate(Action1<ProgressListener.Progress<T>> progressAction) {
+    return progressUpdate(progressAction, throttle);
   }
 
   /**
@@ -43,14 +61,17 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
    * </dl>
    *
    * @param progressAction progress update callback
+   * @param throttle       throttle in millis
    * @return {@link ProgressObservable}
    */
 
-  public ProgressObservable<T> progressUpdate(Action1<ProgressListener.Progress<T>> progressAction) {
-    this.progressUpstream = this.progressUpstream.doOnNext(progress -> {
-      if (!progress.isCompleted())
-        progressAction.call(progress);
-    });
+  public ProgressObservable<T> progressUpdate(Action1<ProgressListener.Progress<T>> progressAction, long throttle) {
+    this.progressUpstream = this.progressUpstream
+        .throttleFirst(throttle, TimeUnit.MILLISECONDS)
+        .doOnNext(progress -> {
+          if (!progress.isCompleted())
+            progressAction.call(progress);
+        });
     this.upstream = setUpstream();
     return this;
   }
@@ -91,9 +112,9 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
    * {@link #onProgressCompleted(Action1) onProgressCompleted}</dd>
    * </dl>
    *
-   * @param progressStartAction progress action listener
-   * @param waitFor             receive progress updates for millis
-   * @param minRemaining        continue receiving progress updates after waitFor period is over
+   * @param progressStartAction progress start action callback
+   * @param waitFor             receive progress start updates for millis
+   * @param minRemaining        continue receiving progress start updates after waitFor period is over
    * @return {@link ProgressObservable}
    */
 

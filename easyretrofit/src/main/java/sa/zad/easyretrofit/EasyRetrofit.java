@@ -17,19 +17,16 @@ public class EasyRetrofit {
   private final Gson gson = new Gson();
   private Application mApplication;
 
-  public EasyRetrofit() {
-  }
-
   public EasyRetrofit(Application application) {
     mApplication = application;
     INSTANCE = this;
   }
 
-  public static EasyRetrofit getInstance() {
+  public static EasyRetrofit getInstance() throws Exception {
     if (INSTANCE != null) {
       return INSTANCE;
     }
-    return new EasyRetrofit();
+    throw new Exception("Class not instantiated");
   }
 
   public Gson gson() {

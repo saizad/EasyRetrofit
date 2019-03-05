@@ -9,7 +9,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         response_post.setOnClickListener {
-            startActivity(getActivityIntent(EasyObservableActivity::class.java, this))
+            startActivity(getActivityIntent(NeverObservableActivity::class.java, this))
         }
 
         observable_get.setOnClickListener {
@@ -17,11 +17,11 @@ class MainActivity : BaseActivity() {
         }
 
         download.setOnClickListener {
-            startActivity(getActivityIntent(DownloadActivity::class.java, this))
+            startActivity(getActivityIntent(DownloadObservableActivity::class.java, this))
         }
 
         upload.setOnClickListener {
-            startActivity(getActivityIntent(UploadActivity::class.java, this))
+            startActivity(getActivityIntent(UploadObservableActivity::class.java, this))
         }
     }
 }

@@ -29,11 +29,11 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".EasyObservableActivity"/>
-        <activity android:name=".DownloadActivity">
+        <activity android:name=".NeverObservableActivity"/>
+        <activity android:name=".DownloadObservableActivity">
 
         </activity>
-        <activity android:name=".UploadActivity">
+        <activity android:name=".UploadObservableActivity">
 
         </activity>
     </application>

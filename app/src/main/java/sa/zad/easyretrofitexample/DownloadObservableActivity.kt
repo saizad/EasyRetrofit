@@ -6,11 +6,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_download_observable.*
+import sa.zad.easyretrofit.CachePolicy
 import sa.zad.easyretrofit.ProgressListener
 import sa.zad.easyretrofit.Utils
 
 
-class DownloadActivity : BaseActivity() {
+class DownloadObservableActivity : BaseActivity() {
      var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,8 @@ class DownloadActivity : BaseActivity() {
             progress_fab.setIndeterminate(true)
             progress_fab.setShowProgressBackground(true)
             request_error.visibility = View.GONE
-            service.download(url)
+            service.cacheDownload(url, CachePolicy.LOCAL_IF_AVAILABLE)
+//                    .applyThrottle(10)
                     .onProgressStart({
                     }, Utils.toInteger(min_processing_time.text.toString(), 1).toLong() * 1000, 50)
                     .progressUpdate {
@@ -63,6 +65,7 @@ class DownloadActivity : BaseActivity() {
                         request_error.text = it.message
                         request_error.visibility = View.VISIBLE
                         progress_fab.hideProgress()
+                        toast(it.message)
                     }.doFinally {
                         progress_fab.hideProgress()
                     }.subscribe()
@@ -75,8 +78,8 @@ class DownloadActivity : BaseActivity() {
     }
 
     private fun updateStatus(progress: ProgressListener.Progress<*>){
-        time_remaining.text = (progress.timeRemaining() / 1000).toString() + " Sec"
-        size_remaining.text = ((progress.size - progress.written) / (1024 * 1000)).toString() + " Mb"
-        elapsed_time.text = (progress.elapsedTime()/ 1000).toString() + " Sec"
+        time_remaining.text = getString (R.string.seconds, progress.timeRemaining() / 1000)
+        size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
+        elapsed_time.text = getString (R.string.seconds, progress.elapsedTime() / 1000)
     }
 }

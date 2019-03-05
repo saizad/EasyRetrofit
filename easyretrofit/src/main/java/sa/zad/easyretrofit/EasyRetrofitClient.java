@@ -13,8 +13,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class EasyRetrofitClient {
 
-  public static String CACHE_POLICY_HEADER = "Cache-Policy";
-  private static long DEFAULT_TIMEOUT = 5 * 60 * 1000;
+  public static final String CACHE_POLICY_HEADER = "Cache-Policy";
+  private static long DEFAULT_TIMEOUT = 10 * 1000;
   private final Application mApplication;
 
   public EasyRetrofitClient(Application application) {
@@ -37,12 +37,11 @@ public class EasyRetrofitClient {
   }
 
   protected int cacheSize() {
-    return 950 * 1024 * 1024; // 50MB
+    return 50 * 1024 * 1024; // 50MB
   }
 
   private HttpLoggingInterceptor getLoggingInterceptor() {
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-    // set your desired log level
     logging.setLevel(loggingLevel());
     return logging;
   }
@@ -94,7 +93,7 @@ public class EasyRetrofitClient {
   }
 
   protected HttpLoggingInterceptor.Level loggingLevel() {
-    return BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE;
+    return BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.HEADERS : HttpLoggingInterceptor.Level.NONE;
   }
 
   protected long cacheStale(@CachePolicy int cachePolicy) {

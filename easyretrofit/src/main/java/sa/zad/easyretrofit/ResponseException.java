@@ -20,6 +20,8 @@ public class ResponseException extends HttpException {
       return EasyRetrofit.getInstance().gson().fromJson(response().errorBody().string(), error);
     } catch (IOException e) {
       return null;
+    } catch (Exception e){
+      return null;
     }
   }
 }

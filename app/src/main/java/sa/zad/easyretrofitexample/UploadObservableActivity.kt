@@ -1,7 +1,6 @@
 package sa.zad.easyretrofitexample
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,9 +16,8 @@ import sa.zad.easyretrofit.observables.UploadObservable
 import java.io.File
 
 
-class UploadActivity : BaseActivity() {
+class UploadObservableActivity : BaseActivity() {
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_upload_observable)
@@ -91,10 +89,10 @@ class UploadActivity : BaseActivity() {
         startActivityForResult(intent, 1)
     }
 
-    private fun updateStatus(progress: ProgressListener.Progress<*>) {
-        time_remaining.text = (progress.timeRemaining() / 1000).toString() + " Sec"
-        size_remaining.text = ((progress.size - progress.written) / (1024 * 1000)).toString() + " Mb"
-        elapsed_time.text = (progress.elapsedTime() / 1000).toString() + " Sec"
+    private fun updateStatus(progress: ProgressListener.Progress<*>){
+        time_remaining.text = getString (R.string.seconds, progress.timeRemaining() / 1000)
+        size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
+        elapsed_time.text = getString (R.string.seconds, progress.elapsedTime() / 1000)
     }
 
     private fun error(string: String) {

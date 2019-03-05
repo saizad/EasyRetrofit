@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">EasyRetrofitExample</string>
     <string name="name">%s %s</string>
+    <string name="seconds">%d Sec</string>
+    <string name="mb">%s MB</string>
+    <string name="kb">%s KB</string>
     <string name="download_url">http://mirror.filearena.net/pub/speed/SpeedTest_%s.dat</string>
 </resources>

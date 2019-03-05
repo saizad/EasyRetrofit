@@ -37,5 +37,5 @@ public abstract class CallDownloadEnqueueObservable<T> extends CallEnqueueObserv
   }
 
   @Nullable
-  protected abstract T responseBodyReady(ResponseBody responseBody, HttpUrl url, Action1<Integer> writtenCallback) throws Exception;
+  protected abstract T responseBodyReady(ResponseBody responseBody, HttpUrl url, Action1<Long> writtenCallback) throws Exception;
 }

@@ -8,7 +8,7 @@ import sa.zad.easyretrofitexample.model.RegisterBody
 import sa.zad.easyretrofitexample.model.RegisterError
 
 
-class EasyObservableActivity : BaseActivity() {
+class NeverObservableActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,9 @@ class EasyObservableActivity : BaseActivity() {
                     .apiException({
                         showError(it.error)
                     }, RegisterError::class.java)
-                    .exception { showError(it.message) }
+                    .exception {
+                        toast(it.message)
+                        showError(it.message) }
                     .doOnNext {
                         showSuccess("Registered Successfully!!")
                     }.doFinally {
@@ -38,7 +40,8 @@ class EasyObservableActivity : BaseActivity() {
             observable_menu.close(true)
             service.register(registerBody("random@email.com"))
                     .apiException({
-                        showSuccess("Api Error Tested Successfully!!")
+                        if(it != null)
+                            showSuccess("Api Error Tested Successfully!!")
                         showError(it.error)
                     }, RegisterError::class.java)
                     .exception {
