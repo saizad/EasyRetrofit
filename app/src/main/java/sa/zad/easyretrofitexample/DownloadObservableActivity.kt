@@ -6,13 +6,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_download_observable.*
+import kotlinx.android.synthetic.main.progress_layout.*
 import sa.zad.easyretrofit.CachePolicy
 import sa.zad.easyretrofit.ProgressListener
-import sa.zad.easyretrofit.Utils
+import sa.zad.easyretrofitexample.Utils.readTextIntToMillis
 
 
 class DownloadObservableActivity : BaseActivity() {
-     var url: String? = null
+    var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class DownloadObservableActivity : BaseActivity() {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 url = hashMap[(view as TextView).text]
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         download_list.onItemSelectedListener = onItemSelectedListener
@@ -50,13 +52,15 @@ class DownloadObservableActivity : BaseActivity() {
             progress_fab.setShowProgressBackground(true)
             request_error.visibility = View.GONE
             service.cacheDownload(url, CachePolicy.LOCAL_IF_AVAILABLE)
-//                    .applyThrottle(10)
-                    .onProgressStart({
-                    }, Utils.toInteger(min_processing_time.text.toString(), 1).toLong() * 1000, 50)
-                    .progressUpdate {
+                    .applyThrottle(readTextIntToMillis(default_throttle))
+                    .onProgressStart({ updateStatus(it) },
+                            readTextIntToMillis(min_processing_time), 100,
+                            readTextIntToMillis(start_update_throttle))
+                    .progressUpdate({
                         progress_fab.setIndeterminate(false)
                         updateProgress(it)
-                    }.onProgressCompleted {
+                    }, readTextIntToMillis(update_throttle))
+                    .onProgressCompleted {
                         progress_fab.setIndeterminate(false)
                         updateProgress(it)
                     }.successResponse {
@@ -72,14 +76,14 @@ class DownloadObservableActivity : BaseActivity() {
         }
     }
 
-    private fun updateProgress(progress: ProgressListener.Progress<*>){
+    private fun updateProgress(progress: ProgressListener.Progress<*>) {
         updateStatus(progress)
         progress_fab.setProgress(progress.progress.toInt(), false)
     }
 
     private fun updateStatus(progress: ProgressListener.Progress<*>){
-        time_remaining.text = getString (R.string.seconds, progress.timeRemaining() / 1000)
+        time_remaining.text = getString(R.string.seconds, progress.estimatedTimeRemaining() / 1000)
         size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
-        elapsed_time.text = getString (R.string.seconds, progress.elapsedTime() / 1000)
+        elapsed_time.text = getString(R.string.seconds, progress.elapsedTime() / 1000)
     }
 }

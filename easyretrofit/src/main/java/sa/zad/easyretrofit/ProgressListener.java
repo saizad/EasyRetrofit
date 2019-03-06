@@ -19,28 +19,28 @@ public interface ProgressListener<R> {
     public long size;
     public @Nullable
     R value;
-    private Long startTime;
-    private Long latestTime;
+    private final long startTime;
+    private long latestTime;
 
 
     public Progress(long size) {
       this(size, System.currentTimeMillis());
     }
 
-    public Progress(long size, Long startTime) {
+    public Progress(long size, long startTime) {
       this.size = size;
       this.startTime = startTime;
     }
 
-    public Long timeRemaining() {
+    public long estimatedTimeRemaining() {
       return totalDuration() - elapsedTime();
     }
 
-    public Long elapsedTime(){
+    public long elapsedTime(){
       return latestTime - startTime;
     }
 
-    public Long totalDuration() {
+    public long totalDuration() {
       return (elapsedTime() * size / written);
     }
 

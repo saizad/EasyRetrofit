@@ -47,97 +47,27 @@
         android:id="@+id/file_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:hint="Select File"
+        android:maxLines="1"
+        android:paddingEnd="20dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/file_icon"
         app:layout_constraintTop_toTopOf="@+id/file_icon"/>
 
 
-    <EditText
-        android:id="@+id/min_processing_time"
+    <include
+        android:id="@+id/progress_layout"
+        layout="@layout/progress_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="Show progress after seconds"
-        android:inputType="number"
-        android:textSize="24sp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selected_file_bg"
-        />
-
-    <TextView
-        android:id="@+id/elapsed_time_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="64dp"
-        android:hint="Elapsed Time:"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/min_processing_time"/>
-
-    <TextView
-        android:id="@+id/elapsed_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="0 Sec"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/elapsed_time_label"
-        app:layout_constraintStart_toStartOf="@+id/time_remaining"
-        app:layout_constraintTop_toTopOf="@+id/elapsed_time_label"/>
-
-
-    <TextView
-        android:id="@+id/time_remaining_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:hint="Time Remaining:"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/elapsed_time_label"/>
-
-    <TextView
-        android:id="@+id/time_remaining"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:hint="0 Sec"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/time_remaining_label"
-        app:layout_constraintStart_toEndOf="@+id/time_remaining_label"
-        app:layout_constraintTop_toTopOf="@+id/time_remaining_label"/>
-
-    <TextView
-        android:id="@+id/size_remaining_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:hint="Size Remaining:"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_remaining_label"/>
-
-    <TextView
-        android:id="@+id/size_remaining"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="0 Kb"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/size_remaining_label"
-        app:layout_constraintStart_toStartOf="@+id/time_remaining"
-        app:layout_constraintTop_toTopOf="@+id/size_remaining_label"/>
+        app:layout_constraintTop_toBottomOf="@id/selected_file_bg"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/progress_fab"
@@ -150,21 +80,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_upload_white"/>
-
-    <TextView
-        android:id="@+id/request_error"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="16dp"
-        android:textAlignment="center"
-        android:textColor="@color/error"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/size_remaining"
-        tools:text="Error"
-        tools:visibility="visible"/>
 
 </android.support.constraint.ConstraintLayout>

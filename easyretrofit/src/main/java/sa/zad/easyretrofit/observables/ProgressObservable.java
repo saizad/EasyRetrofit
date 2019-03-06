@@ -1,5 +1,7 @@
 package sa.zad.easyretrofit.observables;
 
+import android.util.Log;
+
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -13,7 +15,8 @@ import sa.zad.easyretrofit.ProgressListener;
 public class ProgressObservable<T> extends NeverErrorObservable<T> {
 
   private Observable<ProgressListener.Progress<T>> progressUpstream;
-  private long throttle = 1000;
+  public final static long DEFAULT_THROTTLE = 1000;
+  public long defaultThrottle = DEFAULT_THROTTLE;
 
   ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream.takeLast(1).map(progressResponse -> Response.success(progressResponse.body().value)));
@@ -38,7 +41,7 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
    */
 
   public ProgressObservable<T> applyThrottle(long throttle) {
-    this.throttle = throttle;
+    this.defaultThrottle = throttle;
     return this;
   }
 
@@ -47,7 +50,7 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
    */
 
   public ProgressObservable<T> progressUpdate(Action1<ProgressListener.Progress<T>> progressAction) {
-    return progressUpdate(progressAction, throttle);
+    return progressUpdate(progressAction, defaultThrottle);
   }
 
   /**
@@ -104,6 +107,15 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
   }
 
   /**
+   * @see #onProgressStart(Action1, Long, Long)  for docs
+   */
+
+  public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>>
+                                                   progressStartAction, Long waitFor, Long minRemaining) {
+    return onProgressStart(progressStartAction, waitFor, minRemaining, defaultThrottle);
+  }
+
+  /**
    * <p>Receive progress start update for uploading/downloading</p>
    * <br/>
    * <dl>
@@ -115,17 +127,34 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
    * @param progressStartAction progress start action callback
    * @param waitFor             receive progress start updates for millis
    * @param minRemaining        continue receiving progress start updates after waitFor period is over
+   * @param throttle            throttle start updates in millis
    * @return {@link ProgressObservable}
    */
 
 
   public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>>
-                                                   progressStartAction, Long waitFor, Long minRemaining) {
+                                                   progressStartAction, Long waitFor, Long minRemaining, long throttle) {
+    final long[] lastTime = new long[1];
+
+    final long minThrottle = Math.min(this.defaultThrottle, throttle);
+    Log.d("asdfasdf", "minThrottle " + minThrottle);
+    Log.d("asdfasdf", "this.throttle " + this.defaultThrottle);
+    Log.d("asdfasdf", "throttle " + throttle);
     this.progressUpstream = this.progressUpstream
+        .doOnNext(tProgress -> {
+          Log.d("asdfasdf", "------------ ");
+        })
+        .throttleFirst(minThrottle, TimeUnit.MILLISECONDS)
+        .doOnNext(tProgress -> {
+          Log.d("asdfasdf", "*************** ");
+        })
         .skipWhile(progress -> {
-          if ((progress.elapsedTime() < waitFor || progress.timeRemaining() < minRemaining)
+          if ((progress.elapsedTime() < waitFor || progress.estimatedTimeRemaining() < minRemaining)
               && !progress.isCompleted()) {
-            progressStartAction.call(progress);
+            if (System.currentTimeMillis() - lastTime[0] > throttle) {
+              lastTime[0] = System.currentTimeMillis();
+              progressStartAction.call(progress);
+            }
             return true;
           }
           return false;

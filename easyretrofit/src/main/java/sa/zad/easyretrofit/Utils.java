@@ -15,21 +15,6 @@ import rx.functions.Action1;
 
 public final class Utils {
 
-  /**
-   * Converts a {@link String} to an {@link Integer}, or default int if the integer cannot be parsed.
-   */
-  public static @NonNull
-  Integer toInteger(final @Nullable String s, final Integer defaultInt) {
-    if (s != null) {
-      try {
-        return Integer.parseInt(s);
-      } catch (final @NonNull NumberFormatException e) {
-        return defaultInt;
-      }
-    }
-
-    return defaultInt;
-  }
 
   public static void writeStreamToFile(@NonNull InputStream input, @NonNull File file) throws IOException {
     writeStreamToFile(input, file, integer -> {
@@ -59,6 +44,14 @@ public final class Utils {
 
   public static boolean isNotNull(final @Nullable Object object) {
     return object != null;
+  }
+
+  @NonNull
+  public static <T> T coalesce(final @Nullable T value, final @NonNull T theDefault) {
+    if (value != null) {
+      return value;
+    }
+    return theDefault;
   }
 
   public static float decimalFloat(float value) {

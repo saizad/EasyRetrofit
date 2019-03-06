@@ -10,9 +10,11 @@ import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
+import kotlinx.android.synthetic.main.progress_layout.*
 import sa.zad.easyretrofit.ProgressListener
 import sa.zad.easyretrofit.Utils
 import sa.zad.easyretrofit.observables.UploadObservable
+import sa.zad.easyretrofitexample.Utils.readTextIntToMillis
 import java.io.File
 
 
@@ -49,7 +51,7 @@ class UploadObservableActivity : BaseActivity() {
                     return@map file
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ file ->
-                    file_size.text = (file.length() / 1000f / 1000f).toString() + " Mb"
+                    file_size.text =  getString(R.string.mb,(file.length() / 1000f / 1000f).toString())
                     file_name.text = file.name
                     selectedFile = file
                     progress_fab.show(true)
@@ -63,13 +65,15 @@ class UploadObservableActivity : BaseActivity() {
             progress_fab.setShowProgressBackground(true)
             request_error.visibility = View.GONE
             service.upload("http://www.csm-testcenter.org/test", UploadObservable.part(selectedFile))
+                    .applyThrottle(readTextIntToMillis(default_throttle))
                     .onProgressStart({
-                    }, Utils.toInteger(min_processing_time.text.toString(), 1).toLong() * 1000, 50)
-                    .progressUpdate {
                         updateStatus(it)
+                    }, readTextIntToMillis(min_processing_time), 50, readTextIntToMillis(start_update_throttle))
+                    .progressUpdate ({
                         progress_fab.setIndeterminate(false)
-                        progress_fab.setProgress(it.progress.toInt(), false)
-                    }.onProgressCompleted {
+                        updateProgress(it)
+                    }, readTextIntToMillis(update_throttle))
+                    .onProgressCompleted {
                         updateStatus(it)
                     }.failedResponse {
                         toast("Failed Response received " + it.code())
@@ -89,8 +93,13 @@ class UploadObservableActivity : BaseActivity() {
         startActivityForResult(intent, 1)
     }
 
+    private fun updateProgress(progress: ProgressListener.Progress<*>) {
+        updateStatus(progress)
+        progress_fab.setProgress(progress.progress.toInt(), false)
+    }
+
     private fun updateStatus(progress: ProgressListener.Progress<*>){
-        time_remaining.text = getString (R.string.seconds, progress.timeRemaining() / 1000)
+        time_remaining.text = getString (R.string.seconds, progress.estimatedTimeRemaining() / 1000)
         size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
         elapsed_time.text = getString (R.string.seconds, progress.elapsedTime() / 1000)
     }
