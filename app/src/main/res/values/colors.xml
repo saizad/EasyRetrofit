@@ -7,4 +7,6 @@
     <color name="primaryDarkColor">#499c6e</color>
     <color name="white">#fff</color>
     <color name="colorPrimaryLight">#e5e5e5</color>
+    <color name="fab_disable">#e5827b</color>
+    <color name="black">#000</color>
 </resources>

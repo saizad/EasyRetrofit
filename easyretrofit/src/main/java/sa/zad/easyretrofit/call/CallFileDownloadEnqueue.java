@@ -21,7 +21,7 @@ public class CallFileDownloadEnqueue extends CallDownloadEnqueueObservable<File>
   }
 
   @Override
-  protected final File responseBodyReady(@NonNull ResponseBody responseBody, HttpUrl url, Action1<Long> writtenCallback) throws Exception {
+  protected File responseBodyReady(@NonNull ResponseBody responseBody, HttpUrl url, Action1<Long> writtenCallback) throws Exception {
     final File saveTo = saveTo(url);
     Utils.writeStreamToFile(responseBody.byteStream(), saveTo, writtenCallback);
     return saveTo;

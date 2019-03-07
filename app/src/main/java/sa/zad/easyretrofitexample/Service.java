@@ -35,6 +35,9 @@ interface Service {
   FileDownloadObservable cacheDownload(@Url String url, @Header(CACHE_POLICY_HEADER) @CachePolicy int cachePolicy);
 
   @GET
+  MediaStoreObservable mediaDownload(@Url String url);
+
+  @GET
   @Streaming
   FileDownloadObservable download(@Url String url);
 

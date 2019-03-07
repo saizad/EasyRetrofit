@@ -3,12 +3,13 @@ package sa.zad.easyretrofitexample
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.layout_easy_observable.*
+import kotlinx.android.synthetic.main.request_status_layout.*
 import sa.zad.easyretrofitexample.Utils.hideSoftKeyboard
 import sa.zad.easyretrofitexample.model.RegisterBody
 import sa.zad.easyretrofitexample.model.RegisterError
 
 
-class NeverObservableActivity : BaseActivity() {
+class NeverErrorObservableActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

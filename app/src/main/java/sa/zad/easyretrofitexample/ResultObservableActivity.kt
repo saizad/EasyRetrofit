@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import kotlinx.android.synthetic.main.layout_result_observable.*
+import kotlinx.android.synthetic.main.request_status_layout.*
 import java.io.File
 
 class ResultObservableActivity : BaseActivity() {
@@ -17,10 +18,8 @@ class ResultObservableActivity : BaseActivity() {
             fetchUser((1..15).shuffled().last())
         }
         error_check.setOnClickListener {
-            fetchUser(13)
+            fetchUser(404)
         }
-
-
     }
 
     @SuppressLint("CheckResult")
@@ -43,8 +42,7 @@ class ResultObservableActivity : BaseActivity() {
                 .failedResponse { failed("Failed Response: " + it?.message!!) }
                 .flatMap {
                     val user = it.response()?.body()?.data
-                    log(user?.avatar)
-                    service.download(user?.avatar).map {
+                    service.mediaDownload(user?.avatar).map {
                         Pair<File, String>(it,
                                 getString(R.string.name, user?.first_name, user?.last_name))
                     }

@@ -1,11 +1,9 @@
 package sa.zad.easyretrofitexample
 
-import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
-import android.support.v4.app.ActivityCompat
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
@@ -17,22 +15,22 @@ import java.io.File
 
 
 class UploadObservableActivity : BaseProgress() {
+    private val requestCode : Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_upload_observable)
-        progress_fab.hide(false)
+        progress_fab.isEnabled = false
 
         var selectedFile = File("")
 
         selected_file_bg.setOnClickListener {
-            val perms = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-            ActivityCompat.requestPermissions(this, perms, 1)
+            requestStoragePermission(requestCode)
         }
 
-        permissionResult(1)
+        permissionResult(requestCode)
                 .filter {
+                    log(it.toString())
                     if (!it) {
                         toast("One of the permisssion is not granted")
                     }
@@ -40,7 +38,7 @@ class UploadObservableActivity : BaseProgress() {
                 }
                 .subscribe({ callIntent() }, { toast(it.toString()) }, { toast("Completed") })
 
-        result(1)
+        result(requestCode)
                 .subscribeOn(Schedulers.io())
                 .filter { Utils.isNotNull(it.data) }
                 .map {
@@ -49,10 +47,10 @@ class UploadObservableActivity : BaseProgress() {
                     return@map file
                 }.observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ file ->
-                    file_size.text =  getString(R.string.mb,(file.length() / 1000f / 1000f).toString())
+                    file_size.text = getString(R.string.mb, (file.length() / 1000f / 1000f).toString())
                     file_name.text = file.name
                     selectedFile = file
-                    progress_fab.show(true)
+                    progress_fab.isEnabled = true
                 }, {
                     error(it.message!!)
                 })
@@ -65,19 +63,16 @@ class UploadObservableActivity : BaseProgress() {
                     .onProgressStart({
                         updateStatus(it)
                     }, readTextIntToMillis(min_processing_time), 50, readTextIntToMillis(start_update_throttle))
-                    .progressUpdate ({
+                    .progressUpdate({
                         updateProgress(it, progress_fab)
                     }, readTextIntToMillis(update_throttle))
                     .onProgressCompleted {
-                        updateStatus(it)
-                    }.failedResponse {
-                        toast("Failed Response received " + it.code())
-                    }.successResponse {
-                        toast("Success Response received")
+                        updateProgress(it, progress_fab)
+                        showSuccess("Upload Completed!!")
                     }.exception {
-                        error(it.message!!)
+                        displayError(it.message!!, progress_fab)
                     }.doFinally {
-                        progress_fab.hideProgress()
+                        done(progress_fab)
                     }.subscribe()
         }
     }
@@ -85,7 +80,7 @@ class UploadObservableActivity : BaseProgress() {
     private fun callIntent() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
-        startActivityForResult(intent, 1)
+        startActivityForResult(intent, requestCode)
     }
 
     private fun getFileName(uri: Uri): String {

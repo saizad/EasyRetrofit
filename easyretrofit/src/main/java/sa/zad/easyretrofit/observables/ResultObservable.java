@@ -28,7 +28,7 @@ public class ResultObservable<T> extends Observable<Result<T>> {
   }
 
   /**
-   * if not {@link Response#isSuccessful()} callback will be triggered and followed by {@link Observer#onComplete()}.
+   * if {@link Response} is not {@link Response#isSuccessful() successful} callback will be notified and followed by {@link Observer#onComplete() onComplete}.
    *
    * @param error failed response callback
    * @return {@link ResultObservable}
@@ -42,7 +42,7 @@ public class ResultObservable<T> extends Observable<Result<T>> {
   }
 
   /**
-   * if it's {@link Result#error() error} resultError callback will be triggered and {@link Observer#onComplete()} will be followed.
+   * if it's an {@link Result#error() error}, resultError callback will be notified and {@link Observer#onComplete() onComplete} will be followed.
    *
    * @param resultError failed result callback
    * @return {@link ResultObservable}
@@ -51,6 +51,12 @@ public class ResultObservable<T> extends Observable<Result<T>> {
     upstream = upstream.compose(new FailedResultTransformer<>(resultError));
     return this;
   }
+
+  /**
+   * If source observable encounters any error, resultError callback will be notified and {@link Observer#onComplete() onComplete} will be followed
+   * @param resultError result error callback
+   * @return {@link ResultObservable}
+   */
 
   public ResultObservable<T> neverError(Action1<Throwable> resultError) {
     upstream = upstream.compose(new NeverErrorTransformer<>(resultError));

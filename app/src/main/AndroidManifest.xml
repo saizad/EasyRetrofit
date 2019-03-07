@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ResultObservableActivity">
+        <activity android:name=".ResultObservableActivity" android:label="ResultObservable">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -29,11 +29,11 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".NeverObservableActivity"/>
-        <activity android:name=".DownloadObservableActivity">
+        <activity android:name=".NeverErrorObservableActivity" android:label="NeverErrorObservable"/>
+        <activity android:name=".DownloadObservableActivity"  android:label="DownloadObservable">
 
         </activity>
-        <activity android:name=".UploadObservableActivity">
+        <activity android:name=".UploadObservableActivity" android:label="UploadObservable">
 
         </activity>
     </application>

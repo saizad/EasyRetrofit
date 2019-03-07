@@ -19,7 +19,7 @@ public class Sample extends Application {
     service = sampleEasyRetrofit.provideRetrofit().create(Service.class);
   }
 
-  public SampleEasyRetrofit getSampleEasyRetrofit(){
+  public SampleEasyRetrofit sampleEasyRetrofit(){
     return sampleEasyRetrofit;
   }
 
@@ -30,7 +30,7 @@ public class Sample extends Application {
     return new Sample();
   }
 
-  public Service getService() {
+  public Service service() {
     return service;
   }
 }

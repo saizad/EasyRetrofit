@@ -1,5 +1,6 @@
 package sa.zad.easyretrofitexample;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import io.reactivex.Observable;
@@ -33,7 +35,18 @@ public abstract class BaseActivity extends AppCompatActivity {
   @CallSuper
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    service = Sample.getInstance().getService();
+    service = Sample.getInstance().service();
+    this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item){
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        finish();
+        break;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   public void log(String logText) {
@@ -83,6 +96,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
   public void toast(String toastText) {
     Toast.makeText(this, toastText, Toast.LENGTH_SHORT).show();
+  }
+
+  protected void requestStoragePermission(int requestCode){
+    String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+    ActivityCompat.requestPermissions(this, perms, requestCode);
   }
 
   public static class ActivityResult {

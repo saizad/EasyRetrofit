@@ -12,7 +12,6 @@ import retrofit2.CallAdapter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.Result;
-import sa.zad.easyretrofit.observables.FileDownloadObservable;
 
 public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Factory {
 
@@ -27,24 +26,15 @@ public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Fac
     if (rawType == Completable.class)
       return getCallAdapter(Completable.class, Void.class, Void.class);
 
-    if (rawType == FileDownloadObservable.class)
-      return getCallAdapter(FileDownloadObservable.class, null, null);
+    if (!(returnType instanceof ParameterizedType)) {
+      return getCallAdapter(rawType, null, null);
+    }
 
     Type responseType;
-    if (!(returnType instanceof ParameterizedType)) {
-      throw new IllegalStateException(rawType.getName() + " return type must be parameterized"
-          + " as " + rawType.getName() + "<Foo> or " + rawType.getName() + "<? extends Foo>");
-    }
 
     Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
     Class<?> rawObservableType = getRawType(observableType);
-    if (rawObservableType == Response.class) {
-      if (!(observableType instanceof ParameterizedType)) {
-        throw new IllegalStateException("Response must be parameterized"
-            + " as Response<Foo> or Response<? extends Foo>");
-      }
-      responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
-    } else if (rawObservableType == Result.class) {
+    if (rawObservableType == Result.class || rawObservableType == Response.class) {
       if (!(observableType instanceof ParameterizedType)) {
         throw new IllegalStateException("Result must be parameterized"
             + " as Result<Foo> or Result<? extends Foo>");
