@@ -33,7 +33,7 @@ public class EasyRetrofitClient {
   }
 
   protected File cacheDir() {
-    return new File(mApplication.getFilesDir(), "cache_data");
+    return new File(mApplication.getFilesDir(), "okhttp_cache_data");
   }
 
   protected int cacheSize() {
@@ -57,7 +57,7 @@ public class EasyRetrofitClient {
       long stale = cacheStale(cachePolicy);
       if (CachePolicy.SERVER_ONLY == cachePolicy) {
         request = request.newBuilder()
-            .header("Cache-Control", "public, max-age=0, must-revalidate")
+            .header("Cache-Control", "no-cache")
             .build();
       } else if (CachePolicy.LOCAL_ONLY == cachePolicy) {
         request = request.newBuilder()

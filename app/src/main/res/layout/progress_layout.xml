@@ -6,16 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/start_updates_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:hint="Start Updates(Secs):"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
     <EditText
         android:id="@+id/min_processing_time"
         android:layout_width="0dp"
@@ -23,29 +13,29 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Update duration"
+        android:hint="Start duration"
         android:inputType="numberDecimal"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/start_update_throttle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_updates_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/default_throttle"/>
 
     <EditText
         android:id="@+id/start_update_throttle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Throttle"
+        android:hint="Start Throttle"
         android:inputType="numberDecimal"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/min_processing_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/min_processing_time"
-        app:layout_constraintTop_toBottomOf="@+id/start_updates_title"/>
+        app:layout_constraintTop_toTopOf="@+id/min_processing_time"/>
 
     <EditText
         android:id="@+id/update_throttle"
@@ -57,7 +47,7 @@
         android:ems="10"
         android:hint="Update Throttle"
         android:inputType="numberDecimal"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/min_processing_time"
@@ -69,16 +59,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="Default Throttle"
         android:inputType="numberDecimal"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_throttle"
-        />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/elapsed_time_label"
@@ -89,7 +78,7 @@
         android:hint="Elapsed Time:"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/default_throttle"/>
+        app:layout_constraintTop_toBottomOf="@+id/update_throttle"/>
 
     <TextView
         android:id="@+id/elapsed_time"
@@ -107,8 +96,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:hint="Estimated Time Remaining:"
+        android:layout_marginTop="16dp"
+        android:hint="Estimated Remaining Time:"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/elapsed_time_label"/>
@@ -129,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:hint="Size Remaining:"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +139,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:textAlignment="center"
         android:textColor="@color/error"

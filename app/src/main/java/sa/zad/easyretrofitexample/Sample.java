@@ -6,6 +6,7 @@ public class Sample extends Application {
 
   private static Sample INSTANCE;
   private Service service;
+  private SampleEasyRetrofit sampleEasyRetrofit;
 
   public Sample(){
     INSTANCE = this;
@@ -14,7 +15,12 @@ public class Sample extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    service = new SampleEasyRetrofit(this).provideRetrofit().create(Service.class);
+    sampleEasyRetrofit = new SampleEasyRetrofit(this);
+    service = sampleEasyRetrofit.provideRetrofit().create(Service.class);
+  }
+
+  public SampleEasyRetrofit getSampleEasyRetrofit(){
+    return sampleEasyRetrofit;
   }
 
   public static Sample getInstance(){

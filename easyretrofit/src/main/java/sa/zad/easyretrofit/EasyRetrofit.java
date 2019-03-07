@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -16,6 +17,7 @@ public class EasyRetrofit {
   private static EasyRetrofit INSTANCE;
   private final Gson gson = new Gson();
   private Application mApplication;
+  private OkHttpClient okHttpClient;
 
   public EasyRetrofit(Application application) {
     mApplication = application;
@@ -38,9 +40,14 @@ public class EasyRetrofit {
   }
 
   public Retrofit provideRetrofit() {
-    return retrofitBuilderReady(provideRetrofitBuilder()).client(easyRetrofitClient()
-        .provideOkHttpClientBuilder().build())
+    okHttpClient = easyRetrofitClient().provideOkHttpClientBuilder().build();
+    return retrofitBuilderReady(provideRetrofitBuilder()).client(okHttpClient)
         .build();
+  }
+
+  @NonNull
+  protected EasyRetrofitClient easyRetrofitClient() {
+    return new EasyRetrofitClient(mApplication);
   }
 
   @NonNull
@@ -54,11 +61,6 @@ public class EasyRetrofit {
   }
 
   @NonNull
-  protected EasyRetrofitClient easyRetrofitClient() {
-    return new EasyRetrofitClient(mApplication);
-  }
-
-  @NonNull
   protected Converter.Factory addConverterFactory() {
     return GsonConverterFactory.create();
   }
@@ -66,6 +68,10 @@ public class EasyRetrofit {
   @NonNull
   protected BaseEasyRetrofitCallAdapterFactory addCallAdapterFactory() {
     return new EasyRetrofitCallAdapterFactory();
+  }
+
+  public OkHttpClient client() {
+    return okHttpClient;
   }
 
 }

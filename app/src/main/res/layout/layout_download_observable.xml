@@ -30,8 +30,50 @@
         android:padding="8dp"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"/>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
+        android:text="Cache"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/download_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/download_list"
+        app:layout_constraintTop_toTopOf="@+id/download_list"/>
+
+    <TextView
+        android:id="@+id/cache_options_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:hint="Select Cache Option:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/checkBox"/>
+
+
+    <Spinner
+        android:id="@+id/cache_options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corners_bg"
+        android:dropDownWidth="match_parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:padding="8dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cache_options_title"/>
 
     <include
         android:id="@+id/progress_layout"
@@ -41,19 +83,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/checkBox"/>
-
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:text="Cache"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/progress_layout"
-        app:layout_constraintTop_toBottomOf="@+id/download_list"/>
+        app:layout_constraintTop_toBottomOf="@id/cache_options"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/progress_fab"
