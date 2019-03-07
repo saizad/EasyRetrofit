@@ -1,7 +1,5 @@
 package sa.zad.easyretrofit.observables;
 
-import android.util.Log;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -14,17 +12,12 @@ import sa.zad.easyretrofit.ProgressListener;
  */
 public class ProgressObservable<T> extends NeverErrorObservable<T> {
 
-  private Observable<ProgressListener.Progress<T>> progressUpstream;
   public final static long DEFAULT_THROTTLE = 1000;
   public long defaultThrottle = DEFAULT_THROTTLE;
+  private Observable<ProgressListener.Progress<T>> progressUpstream;
 
   ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream.takeLast(1).map(progressResponse -> Response.success(progressResponse.body().value)));
-
-    /*final Observable<Response<ProgressListener.Progress<T>>> windowUpstream = upstream
-        .window(30, TimeUnit.MILLISECONDS)
-        .flatMap(responseObservable -> responseObservable.takeLast(1));*/
-
     progressUpstream = new NeverErrorObservable<>(upstream);
   }
 
@@ -107,7 +100,15 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
   }
 
   /**
-   * @see #onProgressStart(Action1, Long, Long)  for docs
+   * @see #onProgressStart(Action1, Long, Long, long)   for docs
+   */
+
+  public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>> progressStartAction) {
+    return onProgressStart(progressStartAction, 0L, 0L, defaultThrottle);
+  }
+
+  /**
+   * @see #onProgressStart(Action1, Long, Long, long)   for docs
    */
 
   public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>>
@@ -135,19 +136,7 @@ public class ProgressObservable<T> extends NeverErrorObservable<T> {
   public ProgressObservable<T> onProgressStart(Action1<ProgressListener.Progress<T>>
                                                    progressStartAction, Long waitFor, Long minRemaining, long throttle) {
     final long[] lastTime = new long[1];
-
-    final long minThrottle = Math.min(this.defaultThrottle, throttle);
-    Log.d("asdfasdf", "minThrottle " + minThrottle);
-    Log.d("asdfasdf", "this.throttle " + this.defaultThrottle);
-    Log.d("asdfasdf", "throttle " + throttle);
     this.progressUpstream = this.progressUpstream
-        .doOnNext(tProgress -> {
-          Log.d("asdfasdf", "------------ ");
-        })
-        .throttleFirst(minThrottle, TimeUnit.MILLISECONDS)
-        .doOnNext(tProgress -> {
-          Log.d("asdfasdf", "*************** ");
-        })
         .skipWhile(progress -> {
           if ((progress.elapsedTime() < waitFor || progress.estimatedTimeRemaining() < minRemaining)
               && !progress.isCompleted()) {

@@ -8,11 +8,10 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.layout_download_observable.*
 import kotlinx.android.synthetic.main.progress_layout.*
 import sa.zad.easyretrofit.CachePolicy
-import sa.zad.easyretrofit.ProgressListener
 import sa.zad.easyretrofitexample.Utils.readTextIntToMillis
 
 
-class DownloadObservableActivity : BaseActivity() {
+class DownloadObservableActivity : BaseProgress() {
     var url: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,42 +47,26 @@ class DownloadObservableActivity : BaseActivity() {
         download_list.onItemSelectedListener = onItemSelectedListener
 
         progress_fab.setOnClickListener {
-            progress_fab.setIndeterminate(true)
-            progress_fab.setShowProgressBackground(true)
-            request_error.visibility = View.GONE
+            onRequest(progress_fab)
             service.cacheDownload(url, CachePolicy.LOCAL_IF_AVAILABLE)
                     .applyThrottle(readTextIntToMillis(default_throttle))
                     .onProgressStart({ updateStatus(it) },
                             readTextIntToMillis(min_processing_time), 100,
                             readTextIntToMillis(start_update_throttle))
                     .progressUpdate({
-                        progress_fab.setIndeterminate(false)
-                        updateProgress(it)
+                        updateProgress(it, progress_fab)
                     }, readTextIntToMillis(update_throttle))
                     .onProgressCompleted {
-                        progress_fab.setIndeterminate(false)
-                        updateProgress(it)
+                        updateProgress(it, progress_fab)
                     }.successResponse {
                         toast("Download Completed")
                     }.exception {
-                        request_error.text = it.message
-                        request_error.visibility = View.VISIBLE
+                        error(it.message!!)
                         progress_fab.hideProgress()
                         toast(it.message)
                     }.doFinally {
                         progress_fab.hideProgress()
                     }.subscribe()
         }
-    }
-
-    private fun updateProgress(progress: ProgressListener.Progress<*>) {
-        updateStatus(progress)
-        progress_fab.setProgress(progress.progress.toInt(), false)
-    }
-
-    private fun updateStatus(progress: ProgressListener.Progress<*>){
-        time_remaining.text = getString(R.string.seconds, progress.estimatedTimeRemaining() / 1000)
-        size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
-        elapsed_time.text = getString(R.string.seconds, progress.elapsedTime() / 1000)
     }
 }

@@ -68,6 +68,7 @@ final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<
   @Override
   public void onError(@NonNull Progress<T> upload, Exception exception) {
     this.upload = upload;
+    observer.onError(exception);
   }
 
   @Override

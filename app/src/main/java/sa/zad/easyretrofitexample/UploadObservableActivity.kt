@@ -6,19 +6,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.support.v4.app.ActivityCompat
-import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.layout_upload_observable.*
 import kotlinx.android.synthetic.main.progress_layout.*
-import sa.zad.easyretrofit.ProgressListener
 import sa.zad.easyretrofit.Utils
 import sa.zad.easyretrofit.observables.UploadObservable
 import sa.zad.easyretrofitexample.Utils.readTextIntToMillis
 import java.io.File
 
 
-class UploadObservableActivity : BaseActivity() {
+class UploadObservableActivity : BaseProgress() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,17 +59,14 @@ class UploadObservableActivity : BaseActivity() {
 
 
         progress_fab.setOnClickListener {
-            progress_fab.setIndeterminate(true)
-            progress_fab.setShowProgressBackground(true)
-            request_error.visibility = View.GONE
+            onRequest(progress_fab)
             service.upload("http://www.csm-testcenter.org/test", UploadObservable.part(selectedFile))
                     .applyThrottle(readTextIntToMillis(default_throttle))
                     .onProgressStart({
                         updateStatus(it)
                     }, readTextIntToMillis(min_processing_time), 50, readTextIntToMillis(start_update_throttle))
                     .progressUpdate ({
-                        progress_fab.setIndeterminate(false)
-                        updateProgress(it)
+                        updateProgress(it, progress_fab)
                     }, readTextIntToMillis(update_throttle))
                     .onProgressCompleted {
                         updateStatus(it)
@@ -91,22 +86,6 @@ class UploadObservableActivity : BaseActivity() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
         startActivityForResult(intent, 1)
-    }
-
-    private fun updateProgress(progress: ProgressListener.Progress<*>) {
-        updateStatus(progress)
-        progress_fab.setProgress(progress.progress.toInt(), false)
-    }
-
-    private fun updateStatus(progress: ProgressListener.Progress<*>){
-        time_remaining.text = getString (R.string.seconds, progress.estimatedTimeRemaining() / 1000)
-        size_remaining.text = getString(R.string.mb, progress.sizeRemainingMB().toString())
-        elapsed_time.text = getString (R.string.seconds, progress.elapsedTime() / 1000)
-    }
-
-    private fun error(string: String) {
-        request_error.text = string
-        request_error.visibility = View.VISIBLE
     }
 
     private fun getFileName(uri: Uri): String {
