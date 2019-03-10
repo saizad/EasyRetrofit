@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit.observables;
+package sa.zad.easyretrofit.base;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,17 +6,18 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.observables.NeverErrorObservable;
 
 /**
  * This observable class provides progress updates for both uploads and downloads
  */
-public class ProgressObservable<T> extends NeverErrorObservable<T> {
+public abstract class ProgressObservable<T> extends NeverErrorObservable<T> {
 
   public final static long DEFAULT_THROTTLE = 1000;
   public long defaultThrottle = DEFAULT_THROTTLE;
   private Observable<ProgressListener.Progress<T>> progressUpstream;
 
-  ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
+  protected ProgressObservable(Observable<Response<ProgressListener.Progress<T>>> upstream) {
     super(upstream.takeLast(1).map(progressResponse -> Response.success(progressResponse.body().value)));
     progressUpstream = new NeverErrorObservable<>(upstream);
   }

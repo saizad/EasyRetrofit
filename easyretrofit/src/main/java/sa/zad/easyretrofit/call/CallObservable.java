@@ -31,22 +31,20 @@ public class CallObservable<T> extends Observable<Response<T>> implements Dispos
     observer.onSubscribe(this);
 
     try {
-      init(response -> {
+      makeCall(response -> {
         try {
           response(response);
         } catch (Throwable throwable) {
           throwable(throwable);
         }
       }, this::throwable);
-      if (!call.isExecuted()) {
-        response(call.execute());
-      }
     } catch (Throwable e) {
       throwable(e);
     }
   }
 
-  protected void init(Action1<? super Response<T>> responseAction, Action1<Throwable> throwableAction) {
+  protected void makeCall(Action1<? super Response<T>> responseAction, Action1<Throwable> throwableAction) throws Throwable {
+    response(call.execute());
   }
 
   private void response(Response<T> response) throws Throwable {

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
-import sa.zad.easyretrofit.observables.ProgressObservable;
+import sa.zad.easyretrofit.base.ProgressObservable;
 
 public class Utils {
 

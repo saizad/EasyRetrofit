@@ -55,7 +55,10 @@ public class DefaultCallAdapter<R> extends
     if (rawType == Maybe.class)
       return observable.singleElement();
 
-    return observable;
+    if(rawType == Observable.class)
+      return observable;
+
+    return null;
   }
 
   @Override

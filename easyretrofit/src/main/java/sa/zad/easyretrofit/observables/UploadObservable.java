@@ -11,6 +11,7 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.UploadRequestBody;
+import sa.zad.easyretrofit.base.ProgressObservable;
 
 public class UploadObservable<T> extends ProgressObservable<T> {
 

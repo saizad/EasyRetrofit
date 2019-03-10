@@ -25,20 +25,25 @@ public class EasyRetrofitCallAdapterFactory extends BaseEasyRetrofitCallAdapterF
   protected CallAdapter<?, ?> getCallAdapter(Class<?> rawType, @Nullable  Type responseType,
                                              @Nullable Class<?> parameterizedType) {
 
-    if(rawType == FileDownloadObservable.class)
+    if(rawType == FileDownloadObservable.class) {
       return new FileDownloadCallAdapter();
+    }
 
-    if(rawType == ResultObservable.class)
+    if(rawType == ResultObservable.class) {
       return new RetrofitResultApiCallAdapter<>(responseType);
+    }
 
-    if(rawType == UploadObservable.class)
+    if(rawType == UploadObservable.class) {
       return new UploadCallAdapter<>(responseType);
+    }
 
-    if(rawType == NeverErrorObservable.class)
+    if(rawType == NeverErrorObservable.class) {
       return new NeverErrorCallAdapter<>(responseType);
+    }
 
-    if(rawType == Call.class)
+    if(rawType == Call.class) {
       return  null;
+    }
 
     return new DefaultCallAdapter<>(responseType, rawType, parameterizedType);
   }

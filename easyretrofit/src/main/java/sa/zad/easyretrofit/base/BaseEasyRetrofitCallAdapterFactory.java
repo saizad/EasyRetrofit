@@ -15,9 +15,6 @@ import retrofit2.adapter.rxjava2.Result;
 
 public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Factory {
 
-  public BaseEasyRetrofitCallAdapterFactory() {
-  }
-
   @Override
   public final CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
                                      @NonNull Retrofit retrofit) {
@@ -26,25 +23,27 @@ public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Fac
     if (rawType == Completable.class)
       return getCallAdapter(Completable.class, Void.class, Void.class);
 
+    //if any return type observable is not ParameterizedType
+    // i.e. Observable = true and Observable<?> = false
     if (!(returnType instanceof ParameterizedType)) {
       return getCallAdapter(rawType, null, null);
     }
 
     Type responseType;
 
-    Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
-    Class<?> rawObservableType = getRawType(observableType);
-    if (rawObservableType == Result.class || rawObservableType == Response.class) {
-      if (!(observableType instanceof ParameterizedType)) {
+    Type returnTypeUpperBound = getParameterUpperBound(0, (ParameterizedType) returnType);
+    Class<?> parameterizedType = getRawType(returnTypeUpperBound);
+    if (parameterizedType == Result.class || parameterizedType == Response.class) {
+      if (!(returnTypeUpperBound instanceof ParameterizedType)) {
         throw new IllegalStateException("Result must be parameterized"
-            + " as Result<Foo> or Result<? extends Foo>");
+            + " as " + returnTypeUpperBound + "<Foo>> or " + returnTypeUpperBound + "<? extends Foo>");
       }
-      responseType = getParameterUpperBound(0, (ParameterizedType) observableType);
+      responseType = getParameterUpperBound(0, (ParameterizedType) returnTypeUpperBound);
     } else {
-      responseType = observableType;
+      responseType = returnTypeUpperBound;
     }
 
-    return getCallAdapter(rawType, responseType, rawObservableType);
+    return getCallAdapter(rawType, responseType, parameterizedType);
   }
 
   /**
