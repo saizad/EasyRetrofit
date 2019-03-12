@@ -23,4 +23,9 @@ public class CallFileDownloadEnqueueTest extends BaseCallObservableTest<CallFile
     doAnswerEnqueueSuccess(Response.success(""));
     callObservable.test().assertError(__ -> true);
   }
+
+  @Test
+  public void observableCompleteTest()  {
+    testComplete();
+  }
 }

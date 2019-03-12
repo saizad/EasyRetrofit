@@ -21,4 +21,11 @@ public class CallObservableTest extends BaseCallObservableTest {
     when(mockCall.execute()).thenReturn(Response.success(FAKE_BODY));
     assertForSuccess();
   }
+
+  @Test
+  public void observableCompleteTest() throws Exception {
+    when(mockCall.execute()).thenReturn(Response.success(FAKE_BODY));
+    assertForComplete();
+  }
 }
+

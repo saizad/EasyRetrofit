@@ -76,6 +76,15 @@ public class CallUploadEnqueueTest extends BaseCallObservableTest<CallUploadEnqu
   }
 
   @Test
+  public void observableCompleteTest() {
+    final ProgressListener.Progress progress = new ProgressListener.Progress(3L);
+    doAnswerInvocation(__ -> {
+      callObservable.onProgressStart(progress);
+    }).when(mockUploadRequest).setListener(any(ProgressListener.class));
+    testComplete();
+  }
+
+  @Test
   public void uploadError() {
     final UploadRequestBody mockUploadRequest = setRequestBody();
     final ProgressListener.Progress progress = new ProgressListener.Progress(3L);

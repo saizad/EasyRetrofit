@@ -103,8 +103,21 @@ public abstract class BaseCallObservableTest<C extends CallObservable<?>> {
 
   protected void failedResponse(){
     final ResponseBody responseBodyMock = mock(ResponseBody.class);
-    final Response responseMock = Response.error(404, responseBodyMock);
-    doAnswerEnqueueSuccess(responseMock);
+    failedResponse(responseBodyMock);
+  }
+
+  protected void failedResponse(ResponseBody responseBody){
+    final Response unSuccessfulResponse = Response.error(404, responseBody);
+    doAnswerEnqueueSuccess(unSuccessfulResponse);
     callObservable.test().assertValue(progressResponse -> progressResponse.errorBody() != null);
+  }
+
+  protected void testComplete() {
+    doAnswerEnqueueSuccess();
+    assertForComplete();
+  }
+
+  protected void assertForComplete(){
+    callObservable.test().assertComplete();
   }
 }

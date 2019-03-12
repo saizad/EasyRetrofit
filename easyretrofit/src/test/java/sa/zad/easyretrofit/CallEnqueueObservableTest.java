@@ -27,4 +27,9 @@ public class CallEnqueueObservableTest extends BaseCallObservableTest<CallEnqueu
     doAnswerEnqueueError();
     assertForError();
   }
+
+  @Test
+  public void observableCompleteTest() {
+    testComplete();
+  }
 }
