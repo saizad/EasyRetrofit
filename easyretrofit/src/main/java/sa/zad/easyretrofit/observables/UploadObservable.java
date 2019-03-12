@@ -20,12 +20,12 @@ public class UploadObservable<T> extends ProgressObservable<T> {
   }
 
   @NonNull
-  public static MultipartBody.Part part(File file) {
-    return part(file, MediaType.parse("multipart/form-data"));
+  public static MultipartBody.Part part(String key, File file) {
+    return part(key, file, MediaType.parse("multipart/form-data"));
   }
 
   @NonNull
-  public static MultipartBody.Part part(File file, MediaType mediaType) {
-    return MultipartBody.Part.createFormData("image", file.getName(), new UploadRequestBody(RequestBody.create(mediaType, file)));
+  public static MultipartBody.Part part(String key, File file, MediaType mediaType) {
+    return MultipartBody.Part.createFormData(key, file.getName(), new UploadRequestBody(RequestBody.create(mediaType, file)));
   }
 }

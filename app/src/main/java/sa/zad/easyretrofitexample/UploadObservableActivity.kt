@@ -58,7 +58,7 @@ class UploadObservableActivity : BaseProgress() {
 
         progress_fab.setOnClickListener {
             onRequest(progress_fab)
-            service.upload("http://www.csm-testcenter.org/test", UploadObservable.part(selectedFile))
+            service.upload("http://www.csm-testcenter.org/test", UploadObservable.part("image",selectedFile))
                     .applyThrottle(readTextIntToMillis(default_throttle))
                     .onProgressStart({
                         updateStatus(it)

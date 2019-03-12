@@ -7,7 +7,9 @@ import org.junit.Before;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Stubber;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,12 +20,15 @@ import sa.zad.easyretrofit.call.CallObservable;
 import static org.mockito.BDDMockito.willAnswer;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public abstract class BaseCallObservableTest<C extends CallObservable<?>> {
 
   protected static final String FAKE_BODY = "fake_body";
   protected static final String FAKE_THROWABLE_MESSAGE = "fake_throwable";
+  protected final Exception fakeException = new Exception(FAKE_THROWABLE_MESSAGE);
+
   @Mock
   protected Call mockCall;
   protected C callObservable;
@@ -58,9 +63,9 @@ public abstract class BaseCallObservableTest<C extends CallObservable<?>> {
     callObservable.test().assertValue(assertCallback::call);
   }
 
-  protected void doAnswerEnqueueFailed() {
+  protected void doAnswerEnqueueError() {
     doAnswerEnqueue(callback -> {
-      callback.onFailure(mockCall, new Exception(FAKE_THROWABLE_MESSAGE));
+      callback.onFailure(mockCall, fakeException);
     });
   }
 
@@ -86,5 +91,20 @@ public abstract class BaseCallObservableTest<C extends CallObservable<?>> {
     return willAnswer(invocation -> {
       throw new Exception(FAKE_THROWABLE_MESSAGE);
     });
+  }
+
+  protected <A> Stubber doAnswerInvocation(Action1<A> action){
+    return doAnswer(invocation -> {
+      final A argument = (A) invocation.getArguments()[0];
+      action.call(argument);
+      return argument;
+    });
+  }
+
+  protected void failedResponse(){
+    final ResponseBody responseBodyMock = mock(ResponseBody.class);
+    final Response responseMock = Response.error(404, responseBodyMock);
+    doAnswerEnqueueSuccess(responseMock);
+    callObservable.test().assertValue(progressResponse -> progressResponse.errorBody() != null);
   }
 }

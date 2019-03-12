@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
 
 import rx.functions.Action1;
 
-public final class Utils {
+public class Utils {
 
 
   public static void writeStreamToFile(@NonNull InputStream input, @NonNull File file) throws IOException {

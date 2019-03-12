@@ -24,7 +24,7 @@ public class CallEnqueueObservableTest extends BaseCallObservableTest<CallEnqueu
   @Test
   public void enqueueFailTest() {
     when(mockCall.isExecuted()).thenReturn(true);
-    doAnswerEnqueueFailed();
+    doAnswerEnqueueError();
     assertForError();
   }
 }

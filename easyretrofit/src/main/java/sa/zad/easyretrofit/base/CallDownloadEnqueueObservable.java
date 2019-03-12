@@ -26,12 +26,12 @@ public abstract class CallDownloadEnqueueObservable<T> extends CallEnqueueObserv
       final ResponseBody responseBody = (ResponseBody) responseBodyResponse.body();
       final long startTime = System.currentTimeMillis();
       ProgressListener.Progress<T> progress = new ProgressListener.Progress<>(responseBody.contentLength(), startTime);
-      final T t = responseBodyReady(responseBody, response.raw().request().url(), written -> {
+      final T value = responseBodyReady(responseBody, response.raw().request().url(), written -> {
         progress.setWritten(written);
         observer.onNext(Response.success(progress));
       });
       progress.setWritten(progress.size);
-      progress.setValue(t);
+      progress.setValue(value);
       observer.onNext(Response.success(progress));
       observer.onComplete();
   }

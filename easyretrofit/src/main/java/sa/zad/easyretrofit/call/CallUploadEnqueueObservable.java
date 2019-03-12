@@ -21,15 +21,20 @@ import okhttp3.MultipartBody;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
+import rx.functions.Action1;
 import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.UploadRequestBody;
 
-final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> implements ProgressListener<T> {
+public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> implements ProgressListener<T> {
   private ProgressListener.Progress<T> upload;
 
   public CallUploadEnqueueObservable(Call<Progress<T>> originalCall) {
     super(originalCall);
-    final Request request = originalCall.request();
+  }
+
+  @Override
+  protected void makeCall(Action1<? super Response<Progress<T>>> responseAction, Action1<Throwable> throwableAction) {
+    final Request request = call.request();
     if (request.body() instanceof MultipartBody) {
       MultipartBody multipartBody = ((MultipartBody) request.body());
       for (MultipartBody.Part part : multipartBody.parts()) {
@@ -38,6 +43,7 @@ final public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<
         }
       }
     }
+    super.makeCall(responseAction, throwableAction);
   }
 
   @Override
