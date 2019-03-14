@@ -41,13 +41,13 @@ public class EasyRetrofit {
 
   public Retrofit provideRetrofit() {
     okHttpClient = easyRetrofitClient().provideOkHttpClientBuilder().build();
-    return retrofitBuilderReady(provideRetrofitBuilder()).client(okHttpClient)
+    return retrofitBuilderReady(provideRetrofitBuilder().baseUrl("http://localhost/")).client(okHttpClient)
         .build();
   }
 
   @NonNull
   protected EasyRetrofitClient easyRetrofitClient() {
-    return new EasyRetrofitClient(mApplication);
+    return new EasyRetrofitClient(provideApplication());
   }
 
   @NonNull

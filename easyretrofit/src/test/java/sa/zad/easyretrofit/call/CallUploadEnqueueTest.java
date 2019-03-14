@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit;
+package sa.zad.easyretrofit.call;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,7 +7,8 @@ import okhttp3.MultipartBody;
 import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Response;
-import sa.zad.easyretrofit.call.CallUploadEnqueueObservable;
+import sa.zad.easyretrofit.ProgressListener;
+import sa.zad.easyretrofit.UploadRequestBody;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;

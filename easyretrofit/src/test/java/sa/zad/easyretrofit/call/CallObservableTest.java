@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit;
+package sa.zad.easyretrofit.call;
 
 import org.junit.Test;
 

@@ -1,10 +1,9 @@
-package sa.zad.easyretrofit;
+package sa.zad.easyretrofit.call;
 
 import org.junit.Test;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import sa.zad.easyretrofit.call.CallFileDownloadEnqueue;
 
 public class CallFileDownloadEnqueueTest extends BaseCallObservableTest<CallFileDownloadEnqueue> {
 

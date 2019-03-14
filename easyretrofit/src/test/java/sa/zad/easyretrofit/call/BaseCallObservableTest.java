@@ -1,4 +1,4 @@
-package sa.zad.easyretrofit;
+package sa.zad.easyretrofit.call;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -15,7 +15,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import sa.zad.easyretrofit.call.CallObservable;
 
 import static org.mockito.BDDMockito.willAnswer;
 import static org.mockito.Matchers.any;

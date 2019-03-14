@@ -1,9 +1,8 @@
-package sa.zad.easyretrofit;
+package sa.zad.easyretrofit.call;
 
 import org.junit.Test;
 
 import retrofit2.Call;
-import sa.zad.easyretrofit.call.CallEnqueueObservable;
 
 import static org.mockito.Mockito.when;
 

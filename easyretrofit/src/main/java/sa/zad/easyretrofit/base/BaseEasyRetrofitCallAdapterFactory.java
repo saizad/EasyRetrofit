@@ -15,6 +15,10 @@ import retrofit2.adapter.rxjava2.Result;
 
 public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Factory {
 
+  public static Type upperBound(Type returnTypeUpperBound) {
+    return getParameterUpperBound(0, (ParameterizedType) returnTypeUpperBound);
+  }
+
   @Override
   public final CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
                                      @NonNull Retrofit retrofit) {
@@ -31,14 +35,14 @@ public abstract class BaseEasyRetrofitCallAdapterFactory extends CallAdapter.Fac
 
     Type responseType;
 
-    Type returnTypeUpperBound = getParameterUpperBound(0, (ParameterizedType) returnType);
+    Type returnTypeUpperBound = upperBound(returnType);
     Class<?> parameterizedType = getRawType(returnTypeUpperBound);
     if (parameterizedType == Result.class || parameterizedType == Response.class) {
       if (!(returnTypeUpperBound instanceof ParameterizedType)) {
         throw new IllegalStateException("Result must be parameterized"
             + " as " + returnTypeUpperBound + "<Foo>> or " + returnTypeUpperBound + "<? extends Foo>");
       }
-      responseType = getParameterUpperBound(0, (ParameterizedType) returnTypeUpperBound);
+      responseType = upperBound(returnTypeUpperBound);
     } else {
       responseType = returnTypeUpperBound;
     }
