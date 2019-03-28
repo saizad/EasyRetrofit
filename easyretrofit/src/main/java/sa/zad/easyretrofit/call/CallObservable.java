@@ -53,6 +53,7 @@ public class CallObservable<T> extends Observable<Response<T>> implements Dispos
       terminated = true;
       observer.onComplete();
     }
+    dispose();
   }
 
   private void throwable(Throwable t) {
