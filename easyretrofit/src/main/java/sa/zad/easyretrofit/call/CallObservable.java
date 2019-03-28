@@ -40,8 +40,6 @@ public class CallObservable<T> extends Observable<Response<T>> implements Dispos
       }, this::throwable);
     } catch (Throwable e) {
       throwable(e);
-    }finally {
-      dispose();
     }
   }
 
@@ -55,6 +53,7 @@ public class CallObservable<T> extends Observable<Response<T>> implements Dispos
       terminated = true;
       observer.onComplete();
     }
+    dispose();
   }
 
   private void throwable(Throwable t) {
