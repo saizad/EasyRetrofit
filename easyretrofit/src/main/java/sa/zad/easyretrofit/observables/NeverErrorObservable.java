@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 import rx.functions.Action1;
@@ -32,19 +31,18 @@ public class NeverErrorObservable<T> extends Observable<T> {
         .subscribeOn(Schedulers.io())
         .lift(new RetrofitResponseOperator<>())
         .observeOn(AndroidSchedulers.mainThread());
-
-    /*
-      Ignores any kind of exceptions
-      Todo: temp fixed, there might be unknown side affects
-     */
-
-    RxJavaPlugins.setErrorHandler(throwable -> {
-    });
   }
 
   @Override
   protected final void subscribeActual(Observer<? super T> observer) {
-    upstream.map(Response::body).subscribe(observer);
+    upstream.flatMap( tResponse -> {
+      final T body = tResponse.body();
+      if(body != null) {
+        return Observable.just(body);
+      }else {
+        return Observable.empty();
+      }
+    }).subscribe(observer);
     this.upstream = upstream.compose(new NeverErrorTransformer<>());
   }
 

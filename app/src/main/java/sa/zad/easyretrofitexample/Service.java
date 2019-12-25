@@ -16,7 +16,6 @@ import sa.zad.easyretrofit.observables.NeverErrorObservable;
 import sa.zad.easyretrofit.observables.ResultObservable;
 import sa.zad.easyretrofit.observables.UploadObservable;
 import sa.zad.easyretrofitexample.model.DataModel;
-import sa.zad.easyretrofitexample.model.Register;
 import sa.zad.easyretrofitexample.model.RegisterBody;
 import sa.zad.easyretrofitexample.model.User;
 
@@ -25,7 +24,7 @@ import static sa.zad.easyretrofit.EasyRetrofitClient.CACHE_POLICY_HEADER;
 interface Service {
 
   @POST("api/register/")
-  NeverErrorObservable<Register> register(@Body RegisterBody registerBody);
+  NeverErrorObservable<Void> register(@Body RegisterBody registerBody);
 
   @GET("api/users/{user}")
   ResultObservable<DataModel<User>> users(@Path(value = "user", encoded = true) Integer userId);

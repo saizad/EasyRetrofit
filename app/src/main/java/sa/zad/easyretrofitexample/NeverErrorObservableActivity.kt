@@ -33,7 +33,9 @@ class NeverErrorObservableActivity : BaseActivity() {
                         showSuccess("Registered Successfully!!")
                     }.doFinally {
                         postRequest()
-                    }.subscribe()
+                    }.subscribe({},{
+                        toast(it.message)
+                    })
         }
 
         api_error_test.setOnClickListener { _ ->
