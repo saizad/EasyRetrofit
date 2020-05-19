@@ -3,7 +3,7 @@ package sa.zad.easyretrofitexample
 import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat
 import android.view.View
 import kotlinx.android.synthetic.main.layout_result_observable.*
 import kotlinx.android.synthetic.main.request_status_layout.*

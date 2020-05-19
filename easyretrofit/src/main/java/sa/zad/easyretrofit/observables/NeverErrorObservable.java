@@ -1,8 +1,10 @@
 package sa.zad.easyretrofit.observables;
 
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.net.ConnectException;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -13,6 +15,7 @@ import rx.functions.Action1;
 import sa.zad.easyretrofit.ResponseException;
 import sa.zad.easyretrofit.rx.operator.RetrofitResponseOperator;
 import sa.zad.easyretrofit.rx.transformers.ApiErrorTransformer;
+import sa.zad.easyretrofit.rx.transformers.ConnectionErrorTransformer;
 import sa.zad.easyretrofit.rx.transformers.NeverErrorTransformer;
 
 /**
@@ -24,105 +27,124 @@ import sa.zad.easyretrofit.rx.transformers.NeverErrorTransformer;
  */
 public class NeverErrorObservable<T> extends Observable<T> {
 
-  protected Observable<Response<T>> upstream;
+    protected Observable<Response<T>> upstream;
 
-  public NeverErrorObservable(Observable<Response<T>> upstream) {
-    this.upstream = upstream
-        .subscribeOn(Schedulers.io())
-        .lift(new RetrofitResponseOperator<>())
-        .observeOn(AndroidSchedulers.mainThread());
-  }
+    public NeverErrorObservable(Observable<Response<T>> upstream) {
+        this.upstream = upstream
+                .subscribeOn(Schedulers.io())
+                .lift(new RetrofitResponseOperator<>())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
-  @Override
-  protected final void subscribeActual(Observer<? super T> observer) {
-    upstream.flatMap( tResponse -> {
-      final T body = tResponse.body();
-      if(body != null) {
-        return Observable.just(body);
-      }else {
-        return Observable.empty();
-      }
-    }).subscribe(observer);
-    this.upstream = upstream.compose(new NeverErrorTransformer<>());
-  }
+    @Override
+    protected final void subscribeActual(Observer<? super T> observer) {
+        upstream.flatMap(tResponse -> {
+            final T body = tResponse.body();
+            if (body != null) {
+                return Observable.just(body);
+            } else {
+                return Observable.empty();
+            }
+        }).subscribe(observer);
+        this.upstream = upstream.compose(new NeverErrorTransformer<>());
+    }
 
-  /**
-   * <p>
-   * unsuccessful(range [< 200 or 300 >) response will be piped into the supplied responseAction
-   * </p>
-   * <br><b>Note: </b>
-   * <p>
-   * {@link #failedResponse(Action1) failedResponse} should be called higher in the chain,
-   * before {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
-   * </p>
-   *
-   * @param responseAction callback
-   * @return {@link #NeverErrorObservable(Observable)}
-   */
+    /**
+     * <p>
+     * Call when there's no network connection
+     * </p>
+     * <br><b>Note: </b>
+     * <p>
+     * {@link #connectionException(Action1) connectionException} should be called higher in the chain,
+     * before {@link #failedResponse(Action1) failedResponse}, {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
+     * </p>
+     *
+     * @param onNoConnection callback
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
 
-  public final NeverErrorObservable<T> failedResponse(@NonNull Action1<Response<T>> responseAction) {
-    this.upstream = upstream.doOnError(throwable -> {
-      if (throwable instanceof ResponseException) {
-        final ResponseException responseException = (ResponseException) throwable;
-        responseAction.call((Response<T>) responseException.response());
-      }
-    });
-    return this;
-  }
+    public final NeverErrorObservable<T> connectionException(@NonNull Action1<ConnectException> onNoConnection) {
+        this.upstream = upstream.compose(new ConnectionErrorTransformer<>(onNoConnection));
+        return this;
+    }
 
-  /**
-   * <p>
-   * Successful(range [200..300) Raw retrofit {@link Response} will be piped into the supplied responseAction
-   * </p>
-   * <br><b>Note: </b>
-   * <p>
-   * {@link #successResponse(Action1) successResponse} should be called higher in the chain,
-   * before {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
-   * </p>
-   *
-   * @param responseAction callback
-   * @return {@link #NeverErrorObservable(Observable)}
-   */
+    /**
+     * <p>
+     * unsuccessful(range [< 200 or 300 >) response will be piped into the supplied responseAction
+     * </p>
+     * <br><b>Note: </b>
+     * <p>
+     * {@link #failedResponse(Action1) failedResponse} should be called higher in the chain,
+     * before {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
+     * </p>
+     *
+     * @param responseAction callback
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
 
-  public final NeverErrorObservable<T> successResponse(@NonNull Action1<Response<T>> responseAction) {
-    this.upstream = upstream.doOnNext(responseAction::call);
-    return this;
-  }
+    public final NeverErrorObservable<T> failedResponse(@NonNull Action1<Response<T>> responseAction) {
+        this.upstream = upstream.doOnError(throwable -> {
+            if (throwable instanceof ResponseException) {
+                final ResponseException responseException = (ResponseException) throwable;
+                responseAction.call((Response<T>) responseException.response());
+            }
+        });
+        return this;
+    }
 
-  /**
-   * <p>
-   * If any {@link Throwable} is encountered, it will piped into the supplied errors action, and followed by
-   * {@link Observer#onComplete() onComplete}.
-   * </p>
-   *
-   * @param error error callback
-   * @return {@link #NeverErrorObservable(Observable)}
-   */
-  public final NeverErrorObservable<T> exception(@Nullable Action1<Throwable> error) {
-    this.upstream = upstream.compose(new NeverErrorTransformer<>(error));
-    return this;
-  }
+    /**
+     * <p>
+     * Successful(range [200..300) Raw retrofit {@link Response} will be piped into the supplied responseAction
+     * </p>
+     * <br><b>Note: </b>
+     * <p>
+     * {@link #successResponse(Action1) successResponse} should be called higher in the chain,
+     * before {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
+     * </p>
+     *
+     * @param responseAction callback
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
 
-  /**
-   * <p>
-   * If any {@link ResponseException} is encountered, it will piped into the supplied errors action, and followed by
-   * {@link Observer#onComplete() onComplete}.
-   * </p>
-   *
-   * <b>Note:</b>
-   * <p>In order to listen to Api Error, call this method before
-   * {@link #exception(Action1)}.</p>
-   *
-   * @param apiError Api Error callback
-   * @param eClass   Api Error data model class
-   * @param <E>      Api Error Type
-   * @return {@link #NeverErrorObservable(Observable)}
-   */
-  public <E> NeverErrorObservable<T> apiException(Action1<E> apiError, Class<E> eClass) {
-    final ApiErrorTransformer<Response<T>> transformer =
-        new ApiErrorTransformer<>(e -> apiError.call(e.getErrorBody(eClass)));
-    upstream = upstream.compose(transformer);
-    return this;
-  }
+    public final NeverErrorObservable<T> successResponse(@NonNull Action1<Response<T>> responseAction) {
+        this.upstream = upstream.doOnNext(responseAction::call);
+        return this;
+    }
+
+    /**
+     * <p>
+     * If any {@link Throwable} is encountered, it will piped into the supplied errors action, and followed by
+     * {@link Observer#onComplete() onComplete}.
+     * </p>
+     *
+     * @param error error callback
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
+    public final NeverErrorObservable<T> exception(@Nullable Action1<Throwable> error) {
+        this.upstream = upstream.compose(new NeverErrorTransformer<>(error));
+        return this;
+    }
+
+    /**
+     * <p>
+     * If any {@link ResponseException} is encountered, it will piped into the supplied errors action, and followed by
+     * {@link Observer#onComplete() onComplete}.
+     * </p>
+     *
+     * <b>Note:</b>
+     * <p>In order to listen to Api Error, call this method before
+     * {@link #exception(Action1)}.</p>
+     *
+     * @param apiError Api Error callback
+     * @param eClass   Api Error data model class
+     * @param <E>      Api Error Type
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
+    public <E> NeverErrorObservable<T> apiException(Action1<E> apiError, Class<E> eClass) {
+        final ApiErrorTransformer<Response<T>> transformer =
+                new ApiErrorTransformer<>(e -> apiError.call(e.getErrorBody(eClass)));
+        upstream = upstream.compose(transformer);
+        return this;
+    }
 
 }

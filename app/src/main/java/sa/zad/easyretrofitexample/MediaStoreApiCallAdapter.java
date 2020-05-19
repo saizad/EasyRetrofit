@@ -1,6 +1,6 @@
 package sa.zad.easyretrofitexample;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 

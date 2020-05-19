@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 

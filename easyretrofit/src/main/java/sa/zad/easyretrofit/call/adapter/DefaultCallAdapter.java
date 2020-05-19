@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit.call.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.lang.reflect.Type;
 
@@ -15,8 +15,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.adapter.rxjava2.Result;
 import sa.zad.easyretrofit.base.BaseRetrofitApiCallAdapter;
-import sa.zad.easyretrofit.call.CallEnqueueObservable;
 import sa.zad.easyretrofit.base.ResultObservableConverter;
+import sa.zad.easyretrofit.call.CallEnqueueObservable;
 
 public class DefaultCallAdapter<R> extends
     BaseRetrofitApiCallAdapter<R, Object, Object> {

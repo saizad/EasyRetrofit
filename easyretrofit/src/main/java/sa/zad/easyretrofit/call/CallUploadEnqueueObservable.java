@@ -15,7 +15,7 @@
  */
 package sa.zad.easyretrofit.call;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import okhttp3.MultipartBody;
 import okhttp3.Request;
@@ -26,7 +26,7 @@ import sa.zad.easyretrofit.ProgressListener;
 import sa.zad.easyretrofit.UploadRequestBody;
 
 public class CallUploadEnqueueObservable<T> extends CallEnqueueObservable<ProgressListener.Progress<T>> implements ProgressListener<T> {
-  private ProgressListener.Progress<T> upload;
+  private ProgressListener.Progress<T> upload = new Progress<>(0);
 
   public CallUploadEnqueueObservable(Call<Progress<T>> originalCall) {
     super(originalCall);

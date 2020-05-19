@@ -1,6 +1,6 @@
 package sa.zad.easyretrofitexample;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Type;
 

@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit.call;
 
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;

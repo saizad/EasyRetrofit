@@ -1,7 +1,8 @@
 package sa.zad.easyretrofit;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 

@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit.rx.operator;
 
-import android.support.annotation.CallSuper;
+import androidx.annotation.CallSuper;
 
 import io.reactivex.ObservableOperator;
 import io.reactivex.Observer;

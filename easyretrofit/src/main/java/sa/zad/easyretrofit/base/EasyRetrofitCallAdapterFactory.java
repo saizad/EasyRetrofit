@@ -1,21 +1,21 @@
 package sa.zad.easyretrofit.base;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
+import androidx.annotation.CallSuper;
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
 import retrofit2.CallAdapter;
-import sa.zad.easyretrofit.observables.FileDownloadObservable;
-import sa.zad.easyretrofit.observables.NeverErrorObservable;
-import sa.zad.easyretrofit.observables.ResultObservable;
-import sa.zad.easyretrofit.observables.UploadObservable;
 import sa.zad.easyretrofit.call.adapter.DefaultCallAdapter;
 import sa.zad.easyretrofit.call.adapter.FileDownloadCallAdapter;
 import sa.zad.easyretrofit.call.adapter.NeverErrorCallAdapter;
 import sa.zad.easyretrofit.call.adapter.RetrofitResultApiCallAdapter;
 import sa.zad.easyretrofit.call.adapter.UploadCallAdapter;
+import sa.zad.easyretrofit.observables.FileDownloadObservable;
+import sa.zad.easyretrofit.observables.NeverErrorObservable;
+import sa.zad.easyretrofit.observables.ResultObservable;
+import sa.zad.easyretrofit.observables.UploadObservable;
 
 public class EasyRetrofitCallAdapterFactory extends BaseEasyRetrofitCallAdapterFactory {
 

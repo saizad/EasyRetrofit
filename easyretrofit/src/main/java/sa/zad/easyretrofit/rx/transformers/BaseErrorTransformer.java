@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit.rx.transformers;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;

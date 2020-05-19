@@ -1,6 +1,6 @@
 package sa.zad.easyretrofit.base;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;

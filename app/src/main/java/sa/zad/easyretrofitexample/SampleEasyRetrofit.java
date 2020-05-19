@@ -1,7 +1,7 @@
 package sa.zad.easyretrofitexample;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import retrofit2.Retrofit;
 import sa.zad.easyretrofit.EasyRetrofit;

@@ -41,7 +41,7 @@ class NeverErrorObservableActivity : BaseActivity() {
         api_error_test.setOnClickListener { _ ->
             resetResponseView()
             observable_menu.close(true)
-            service.register(registerBody("random@email.com"))
+            service.register(registerBody("eve.holt@reqres.in"))
                     .apiException({
                         if(it != null)
                             showSuccess("Api Error Tested Successfully!!")
@@ -58,7 +58,7 @@ class NeverErrorObservableActivity : BaseActivity() {
         api_success_test.setOnClickListener { _ ->
             resetResponseView()
             observable_menu.close(true)
-            service.register(registerBody("random@email.com", "rand_pass"))
+            service.register(registerBody("eve.holt@reqres.in", "rand_pass"))
                     .apiException({
                         request_error.text = "Success test failed \n \n" + it.error
                         request_error.visibility = View.VISIBLE

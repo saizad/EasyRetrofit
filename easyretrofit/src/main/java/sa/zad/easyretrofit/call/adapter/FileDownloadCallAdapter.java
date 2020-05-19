@@ -1,9 +1,8 @@
 package sa.zad.easyretrofit.call.adapter;
 
-import android.support.annotation.NonNull;
-
 import java.io.File;
 
+import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import okhttp3.Request;
 import retrofit2.Call;
