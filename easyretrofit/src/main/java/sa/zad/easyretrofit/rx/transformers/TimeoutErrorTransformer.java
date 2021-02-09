@@ -1,16 +1,15 @@
 package sa.zad.easyretrofit.rx.transformers;
 
-import java.net.ConnectException;
-import java.net.UnknownHostException;
+import java.net.SocketTimeoutException;
 
 import androidx.annotation.Nullable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import rx.functions.Action1;
 
-public class ConnectionErrorTransformer<T> extends BaseErrorTransformer<T, ConnectException> {
+public class TimeoutErrorTransformer<T> extends BaseErrorTransformer<T, SocketTimeoutException> {
 
-    public ConnectionErrorTransformer(@Nullable Action1<ConnectException> errorAction) {
+    public TimeoutErrorTransformer(@Nullable Action1<SocketTimeoutException> errorAction) {
         super(errorAction);
     }
 
@@ -18,10 +17,10 @@ public class ConnectionErrorTransformer<T> extends BaseErrorTransformer<T, Conne
     public ObservableSource<T> apply(Observable<T> upstream) {
         return upstream
                 .onErrorResumeNext(e -> {
-                    if (!(e instanceof ConnectException || e instanceof UnknownHostException)) {
+                    if (!(e instanceof SocketTimeoutException)) {
                         return Observable.error(e);
                     } else {
-                        callAction(new ConnectException("Check you connection!!"));
+                        callAction(new SocketTimeoutException("Request time out"));
                         return Observable.empty();
                     }
                 });

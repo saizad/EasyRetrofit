@@ -21,4 +21,19 @@ public class SampleEasyRetrofitClient extends EasyRetrofitClient {
     }
     return builder;
   }
+
+  @Override
+  protected long connectTimeoutMilliseconds() {
+    return 10000;
+  }
+
+  @Override
+  protected long readTimeoutMilliseconds() {
+    return 10000;
+  }
+
+  @Override
+  protected long writeTimeoutMilliseconds() {
+    return 10000;
+  }
 }

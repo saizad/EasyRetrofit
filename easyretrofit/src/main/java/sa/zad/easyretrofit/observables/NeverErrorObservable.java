@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -17,6 +18,7 @@ import sa.zad.easyretrofit.rx.operator.RetrofitResponseOperator;
 import sa.zad.easyretrofit.rx.transformers.ApiErrorTransformer;
 import sa.zad.easyretrofit.rx.transformers.ConnectionErrorTransformer;
 import sa.zad.easyretrofit.rx.transformers.NeverErrorTransformer;
+import sa.zad.easyretrofit.rx.transformers.TimeoutErrorTransformer;
 
 /**
  * <p>This Observable class prevents from triggering any kind of {@link Exception}.
@@ -55,7 +57,26 @@ public class NeverErrorObservable<T> extends Observable<T> {
      * </p>
      * <br><b>Note: </b>
      * <p>
-     * {@link #connectionException(Action1) connectionException} should be called higher in the chain,
+     * This operator should be called higher in the chain,
+     * before {@link #connectionException(Action1)}, {@link #failedResponse(Action1) failedResponse}, {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
+     * </p>
+     *
+     * @param timeOutException callback
+     * @return {@link #NeverErrorObservable(Observable)}
+     */
+
+    public final NeverErrorObservable<T> timeoutException(@NonNull Action1<SocketTimeoutException> timeOutException) {
+        this.upstream = upstream.compose(new TimeoutErrorTransformer<>(timeOutException));
+        return this;
+    }
+
+    /**
+     * <p>
+     * Call when there's no network connection
+     * </p>
+     * <br><b>Note: </b>
+     * <p>
+     * This operator should be called higher in the chain,
      * before {@link #failedResponse(Action1) failedResponse}, {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
      * </p>
      *
@@ -74,7 +95,7 @@ public class NeverErrorObservable<T> extends Observable<T> {
      * </p>
      * <br><b>Note: </b>
      * <p>
-     * {@link #failedResponse(Action1) failedResponse} should be called higher in the chain,
+     * This operator should be called higher in the chain,
      * before {@link #apiException(Action1, Class) apiException} and {@link #exception(Action1) exception}
      * </p>
      *

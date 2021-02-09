@@ -42,6 +42,9 @@ class NeverErrorObservableActivity : BaseActivity() {
             resetResponseView()
             observable_menu.close(true)
             service.register(registerBody("eve.holt@reqres.in"))
+                    .timeoutException {
+                        showError("Api Error Test Failed \n \n" + it.message)
+                    }
                     .apiException({
                         if(it != null)
                             showSuccess("Api Error Tested Successfully!!")
@@ -59,6 +62,12 @@ class NeverErrorObservableActivity : BaseActivity() {
             resetResponseView()
             observable_menu.close(true)
             service.register(registerBody("eve.holt@reqres.in", "rand_pass"))
+                    .timeoutException {
+                        showError("Success test failed \n \n" + it.message)
+                    }
+                    .connectionException {
+                        showError("Success test failed \n \n" + it.message)
+                    }
                     .apiException({
                         request_error.text = "Success test failed \n \n" + it.error
                         request_error.visibility = View.VISIBLE
