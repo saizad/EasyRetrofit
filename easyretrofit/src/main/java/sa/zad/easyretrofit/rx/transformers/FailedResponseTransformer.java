@@ -10,19 +10,19 @@ import sa.zad.easyretrofit.ResponseException;
 
 public class FailedResponseTransformer<T> extends BaseErrorTransformer<Result<T>, ResponseException> {
 
-  public FailedResponseTransformer(@Nullable Action1<ResponseException> action) {
-    super(action);
-  }
+    public FailedResponseTransformer(@Nullable Action1<ResponseException> action) {
+        super(action);
+    }
 
-  @Override
-  public ObservableSource<Result<T>> apply(Observable<Result<T>> upstream) {
-    return upstream
-        .flatMap(tResult -> {
-          if (!tResult.isError() && !tResult.response().isSuccessful()) {
-            callAction(new ResponseException(tResult.response()));
-            return Observable.empty();
-          }
-          return Observable.just(tResult);
-        });
-  }
+    @Override
+    public ObservableSource<Result<T>> apply(Observable<Result<T>> upstream) {
+        return upstream
+                .flatMap(tResult -> {
+                    if (!tResult.isError() && !tResult.response().isSuccessful()) {
+                        callAction(new ResponseException(tResult.response()));
+                        return Observable.empty();
+                    }
+                    return Observable.just(tResult);
+                });
+    }
 }

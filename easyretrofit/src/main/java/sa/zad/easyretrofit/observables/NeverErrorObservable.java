@@ -53,7 +53,7 @@ public class NeverErrorObservable<T> extends Observable<T> {
 
     /**
      * <p>
-     * Call when there's no network connection
+     * Called when connection is timeout
      * </p>
      * <br><b>Note: </b>
      * <p>
@@ -162,8 +162,8 @@ public class NeverErrorObservable<T> extends Observable<T> {
      * @return {@link #NeverErrorObservable(Observable)}
      */
     public <E> NeverErrorObservable<T> apiException(Action1<E> apiError, Class<E> eClass) {
-        final ApiErrorTransformer<Response<T>> transformer =
-                new ApiErrorTransformer<>(e -> apiError.call(e.getErrorBody(eClass)));
+        final ApiErrorTransformer<Response<T>, E> transformer =
+                new ApiErrorTransformer<>(apiError, eClass);
         upstream = upstream.compose(transformer);
         return this;
     }

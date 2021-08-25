@@ -1,6 +1,7 @@
 package sa.zad.easyretrofitexample
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -94,14 +95,15 @@ class DownloadObservableActivity : BaseProgress() {
 
     private fun download() {
         onRequest(progress_fab)
-        service.cacheDownload(url, cachePolicy)
-                .applyThrottle(Utils.readTextIntToMillis(default_throttle))
-                .onProgressStart({ updateStatus(it) },
-                        Utils.readTextIntToMillis(min_processing_time), 100,
-                        Utils.readTextIntToMillis(start_update_throttle))
-                .progressUpdate({
+        service.cacheDownload("http://sandbox.avenue-tech.com:8001/media/zip/subjects/new_zip_zgMMrRl.zip", cachePolicy)
+                .applyThrottle(0)
+//                .onProgressStart({ updateStatus(it) },
+//                        Utils.readTextIntToMillis(min_processing_time), 100,
+//                        Utils.readTextIntToMillis(start_update_throttle))
+                .progressUpdate {
+                    Log.d("asdfasdfasdf", it.progress.toString())
                     updateProgress(it, progress_fab)
-                }, Utils.readTextIntToMillis(update_throttle))
+                }
                 .onProgressCompleted {
                     updateProgress(it, progress_fab)
                     showSuccess("Download Completed!!")
@@ -111,7 +113,7 @@ class DownloadObservableActivity : BaseProgress() {
                 .doFinally {
                     done(progress_fab)
                 }.subscribe {
-                    log(it.name)
+                    toast(it.name)
                 }
     }
 }
